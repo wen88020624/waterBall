@@ -17,6 +17,7 @@ public class Deck {
 
     public void shuffle() {
         Collections.shuffle(deck);
+        System.out.println("shuffle: "+deck);
     }
 
     public Card drawCard() {

@@ -12,7 +12,6 @@ public class Player {
     private Hand hand;
 
     private ExchangeHands exchangee;
-
     private List<ExchangeHands> exchanger;
     private Card showCard;
     public void nameHimSelf(String name) {
@@ -23,6 +22,16 @@ public class Player {
         var otherPlayers = getOtherPlayers(players);
         makeExchangeHandsDecision(otherPlayers);
         playersShowCardEachRound.put(this, this.showCard());
+        countDownRoundsAndExchangeBack(players);
+    }
+
+    private void countDownRoundsAndExchangeBack(List<Player> players) {
+        players.forEach(player -> {
+            if (exchangee != null) {
+                exchangee.countDownRounds();
+                exchangee.exchangeBackIfRoundsCountDownEqualZero();
+            }
+        });
     }
 
     private List<Player> getOtherPlayers(List<Player> players) {
@@ -37,6 +46,7 @@ public class Player {
 
     public void makeExchangeHandsDecision(List<Player> otherPlayers) {
         var isUseExchangeHands = getDecisionByRandom();
+        System.out.println("player: "+this.getName()+". isUseExchangeHands: "+isUseExchangeHands);
         if (isUseExchangeHands) {
             var exhchangee = chooseExchangee(otherPlayers);
             exchangeHand(exhchangee);
@@ -59,9 +69,13 @@ public class Player {
         this.setExchangee(exchangeHands);
         exchangee.addExchanger(exchangeHands);
 
+        System.out.println("before change exchanger: "+this.getName()+", hand: "+this.getHand()+
+                "; exchangee: "+exchangee.getName()+", hand: "+exchangee.getHand());
         var tempHand = this.getHand();
         this.setHand(exchangee.getHand());
         exchangee.setHand(tempHand);
+        System.out.println("after change exchanger: "+this.getName()+", hand: "+this.getHand()+
+                "; exchangee: "+exchangee.getName()+", hand: "+exchangee.getHand());
     }
 
     public Card showCard() {
