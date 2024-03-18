@@ -19,30 +19,31 @@ public class Player {
         this.name = name;
     }
 
-    public void takeTern(Player player, HashMap<Player, Card> playersShowCardEachRound) {
-        player.makeExchangeHandsDecision(getOtherPlayers(player));
-        playersShowCardEachRound.put(player, player.showCard(player));
+    public void takeTern(List<Player> players, HashMap<Player, Card> playersShowCardEachRound) {
+        var otherPlayers = getOtherPlayers(players);
+        makeExchangeHandsDecision(otherPlayers);
+        playersShowCardEachRound.put(this, this.showCard());
     }
 
-    private List<Player> getOtherPlayers(Player currentPlayer) {
+    private List<Player> getOtherPlayers(List<Player> players) {
         var otherPlayers = new ArrayList<Player>(players.size());
         players.forEach(player -> {
-            if (!player.equals(currentPlayer)) {
+            if (!player.equals(this)) {
                 otherPlayers.add(player);
             }
         });
         return otherPlayers;
     }
 
-    public void makeExchangeHandsDecision(List<Player> players) {
-        var isUseExchangeHands = getMakeDecision();
+    public void makeExchangeHandsDecision(List<Player> otherPlayers) {
+        var isUseExchangeHands = getDecisionByRandom();
         if (isUseExchangeHands) {
-            var exhchangee = chooseExchangee(players);
+            var exhchangee = chooseExchangee(otherPlayers);
             exchangeHand(exhchangee);
         }
     }
 
-    private boolean getMakeDecision() {
+    private boolean getDecisionByRandom() {
         var random = new Random();
         return this.exchangee == null && random.nextBoolean();
     }
@@ -63,10 +64,10 @@ public class Player {
         exchangee.setHand(tempHand);
     }
 
-    public Card showCard(Player player) {
+    public Card showCard() {
         var random = new Random();
-        var index = random.nextInt(player.getHand().getHand().size());
-        return player.getHand().getHand().get(index);
+        var index = random.nextInt(this.getHand().getHand().size());
+        return this.getHand().getHand().get(index);
     }
 
     public void gainPoint() {
@@ -110,5 +111,9 @@ public class Player {
 
     public void addExchanger(ExchangeHands exchanger) {
         this.exchanger.add(exchanger);
+    }
+
+    public List<ExchangeHands> getExchanger() {
+        return exchanger;
     }
 }

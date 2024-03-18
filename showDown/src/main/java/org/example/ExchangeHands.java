@@ -1,24 +1,22 @@
 package org.example;
 
-import java.util.List;
-
 public class ExchangeHands {
     private final int roundsCountDown;
-    private final Player leftPlayer;
-    private final Player rightPlayer;
+    private final Player exchanger;
+    private final Player exchangee;
 
-    public ExchangeHands(Player leftPlayer, Player rightPlayer) {
+    public ExchangeHands(Player exchanger, Player exchangee) {
         this.roundsCountDown = 3;
-        this.leftPlayer = leftPlayer;
-        this.rightPlayer = rightPlayer;
+        this.exchanger = exchanger;
+        this.exchangee = exchangee;
     }
 
     public void exchangeBack() {
-        var tempHands = leftPlayer.getHand();
-        leftPlayer.setHand(rightPlayer.getHand());
-        rightPlayer.setHand(tempHands);
-        leftPlayer.setExchangeHands(null);
-        rightPlayer.setExchangeHands(null);
+        var tempHands = exchanger.getHand();
+        exchanger.setHand(exchangee.getHand());
+        exchangee.setHand(tempHands);
+        exchanger.setExchangee(null);
+        exchangee.getExchanger().remove(null);
     }
 
     public void checkRemainTerms() {
