@@ -6,7 +6,7 @@ public class Game {
     private final List<Player> players = new ArrayList<>(4);
     private final Deck deck = new Deck();
 
-    private void start() {
+    public void start() {
         nameHimSelfEachPlayers();
         deck.shuffle();
         drawCardEachPlayers();
@@ -50,21 +50,27 @@ public class Game {
 
     private void printNameAndShowCard(HashMap<Player, Card> playersShowCardEachRound) {
         playersShowCardEachRound.forEach((player, card) -> {
-            System.out.println("Name: "+player.getName()+"Rank: "+card.getRank()+"Suit: "+card.getSuit());
+            System.out.println("Name: "+player.getName()+", Rank: "+card.getRank()+", Suit: "+card.getSuit()+
+                    ", Point: "+player.getPoint());
         });
     }
 
     private void drawCardEachPlayers() {
         players.forEach(player -> {
-            while (player.getHand().size() < 13)
+            System.out.println("drawCardName: "+player.getName());
+            player.setHand(new Hand());
+            while (player.getHand().getCards().size() < 13)
                 player.getHand().addToHand(deck.drawCard());
-            System.out.println("name: "+player.getName()+", hand: "+player.getHand().getHand());
+            System.out.println("name: "+player.getName()+", hand.size: "+player.getHand().getCards().size());
         });
     }
 
     private void nameHimSelfEachPlayers() {
-        for (int i=0; i<players.size(); i++) {
-            players.get(i).nameHimSelf("P" + i);
+        for (int i=0; i<4; i++) {
+            var player = new Player();
+            player.nameHimSelf("P" + i);
+            System.out.println("players: "+players+", playerName: "+player.getName());
+            players.add(player);
         }
     }
 }

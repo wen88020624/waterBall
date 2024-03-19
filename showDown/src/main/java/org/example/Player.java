@@ -8,12 +8,11 @@ import java.util.Random;
 public class Player {
     private String name;
     private Integer point = 0;
-
     private Hand hand;
-
     private ExchangeHands exchangee;
-    private List<ExchangeHands> exchanger;
-    private Card showCard;
+    private final List<ExchangeHands> exchanger = new ArrayList<>(3);
+    private boolean hasExchangedHands = false;
+
     public void nameHimSelf(String name) {
         this.name = name;
     }
@@ -48,14 +47,15 @@ public class Player {
         var isUseExchangeHands = getDecisionByRandom();
         System.out.println("player: "+this.getName()+". isUseExchangeHands: "+isUseExchangeHands);
         if (isUseExchangeHands) {
-            var exhchangee = chooseExchangee(otherPlayers);
-            exchangeHand(exhchangee);
+            var exchangee = chooseExchangee(otherPlayers);
+            System.out.println("Exchanger: "+this.getName()+", Exchangee: "+exchangee.getName());
+            exchangeHand(exchangee);
         }
     }
 
     private boolean getDecisionByRandom() {
         var random = new Random();
-        return this.exchangee == null && random.nextBoolean();
+        return !this.hasExchangedHands && this.exchangee == null && random.nextBoolean();
     }
 
     private Player chooseExchangee(List<Player> players) {
@@ -68,6 +68,7 @@ public class Player {
         var exchangeHands = new ExchangeHands(this, exchangee);
         this.setExchangee(exchangeHands);
         exchangee.addExchanger(exchangeHands);
+        this.setHasExchangedHands(true);
 
         System.out.println("before change exchanger: "+this.getName()+", hand: "+this.getHand()+
                 "; exchangee: "+exchangee.getName()+", hand: "+exchangee.getHand());
@@ -80,8 +81,8 @@ public class Player {
 
     public Card showCard() {
         var random = new Random();
-        var index = random.nextInt(this.getHand().getHand().size());
-        return this.getHand().getHand().get(index);
+        var index = random.nextInt(this.getHand().getCards().size());
+        return this.getHand().getCards().get(index);
     }
 
     public void gainPoint() {
@@ -103,14 +104,6 @@ public class Player {
         return point;
     }
 
-    public Card getShowCard() {
-        return showCard;
-    }
-
-    public void setShowCard(Card showCard) {
-        this.showCard = showCard;
-    }
-
     public Hand getHand() {
         return hand;
     }
@@ -129,5 +122,9 @@ public class Player {
 
     public List<ExchangeHands> getExchanger() {
         return exchanger;
+    }
+
+    public void setHasExchangedHands(boolean hasExchangedHands) {
+        this.hasExchangedHands = hasExchangedHands;
     }
 }

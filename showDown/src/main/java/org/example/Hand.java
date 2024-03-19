@@ -1,19 +1,16 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    private List<Card> hand;
+    private final List<Card> cards = new ArrayList<>(13);
 
     public void addToHand(Card card) {
-        hand.add(card);
+        cards.add(card);
     }
 
-    public int size() {
-        return hand.size();
-    }
-
-    public List<Card> getHand() {
-        return hand;
+    public List<Card> getCards() {
+        return cards;
     }
 }

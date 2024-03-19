@@ -2,10 +2,9 @@ package org.example;
 
 public class ExchangeHands {
     private int roundsCountDown;
-
     private final Player exchanger;
-
     private final Player exchangee;
+
     public ExchangeHands(Player exchanger, Player exchangee) {
         this.roundsCountDown = 3;
         this.exchanger = exchanger;
@@ -18,7 +17,7 @@ public class ExchangeHands {
         exchangee.setHand(tempHands);
 
         exchanger.setExchangee(null);
-        this.exchangee.getExchanger().removeIf(exchange -> exchange.getExchanger().equals(this.exchanger));
+        exchangee.getExchanger().removeIf(exchange -> exchange.getExchanger().equals(exchanger));
     }
 
     public void exchangeBackIfRoundsCountDownEqualZero() {
