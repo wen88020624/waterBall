@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     private final List<Player> players = new ArrayList<>(4);
@@ -11,17 +12,32 @@ public class Game {
         deck.shuffle();
         drawCardEachPlayers();
         doThirteenRounds();
-        printWinner(players);
+        calculatePoints();
+        printWinner();
     }
 
-    private void printWinner(List<Player> players) {
-        Optional<Player> winner = players.stream()
-                .max(Comparator.comparing(Player::getPoint));
-        winner.ifPresent(player -> System.out.print("Last Winner is: " + player.getName() + ", point: " + player.getPoint()));
+    private void calculatePoints() {
+        System.out.println("Calculating points");
+        players.forEach(player -> {
+            System.out.println("Name: "+player.getName()+", Point: "+player.getPoint());
+        });
+    }
+
+    private void printWinner() {
+        int maxPoint = players.stream()
+                .mapToInt(Player::getPoint)
+                .max()
+                .orElseThrow(() -> new IllegalArgumentException("List is empty"));
+
+        var winners = players.stream()
+                .filter(player -> player.getPoint() == maxPoint)
+                .toList();
+
+        winners.forEach(player -> System.out.print("Last Winner is: " + player.getName() + ", point: " + player.getPoint()+"\n"));
     }
 
     private void doThirteenRounds() {
-        for (int round=0; round<13; round++) {
+        for (int round=1; round<=13; round++) {
             System.out.println("round: "+round);
             var playersShowCardEachRound = new HashMap<Player, Card>();
             players.forEach(player -> {
@@ -50,8 +66,7 @@ public class Game {
 
     private void printNameAndShowCard(HashMap<Player, Card> playersShowCardEachRound) {
         playersShowCardEachRound.forEach((player, card) -> {
-            System.out.println("Name: "+player.getName()+", Rank: "+card.getRank()+", Suit: "+card.getSuit()+
-                    ", Point: "+player.getPoint());
+            System.out.println("Name: "+player.getName()+", Rank: "+card.getRank()+", Suit: "+card.getSuit());
         });
     }
 
@@ -66,7 +81,7 @@ public class Game {
     }
 
     private void nameHimSelfEachPlayers() {
-        for (int i=0; i<4; i++) {
+        for (int i=1; i<=4; i++) {
             var player = new Player();
             player.nameHimSelf("P" + i);
             System.out.println("players: "+players+", playerName: "+player.getName());
