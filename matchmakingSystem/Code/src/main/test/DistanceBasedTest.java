@@ -31,4 +31,29 @@ public class DistanceBasedTest {
         assertEquals("No match found for individual!", exception.getMessage());
     }
 
+    @Test
+    void testMatchByDistanceBasedReverse() {
+        var system = new MatchmakingSystem(new DistanceBasedReverse());
+        var individual1 = new Individual(Gender.MALE, 25, "Hi, I'm A.", "coding,reading", new Coord(0, 0), system);
+        var individual2 = new Individual(Gender.FEMALE, 23, "Hi, I'm B.", "music,traveling", new Coord(6, 0), system);
+        var individual3 = new Individual(Gender.FEMALE, 21, "Hi, I'm C.", "music,traveling", new Coord(-6, 0), system);
+        var individual4 = new Individual(Gender.FEMALE, 21, "Hi, I'm D.", "music,traveling", new Coord(0, 0), system);
+
+        system.match();
+
+        assertEquals(individual1.getMatchWith(), individual2);
+        assertEquals(individual2.getMatchWith(), individual3);
+        assertEquals(individual3.getMatchWith(), individual2);
+        assertEquals(individual4.getMatchWith(), individual2);
+    }
+
+    @Test
+    void testNoMatchFoundExceptionByDistanceBasedReverse() {
+        var system = new MatchmakingSystem(new DistanceBasedReverse());
+        new Individual(Gender.MALE, 25, "Hi, I'm A.", "coding,reading", new Coord(6, 9), system);
+
+        Exception exception =  assertThrowsExactly(RuntimeException.class, system::match);
+        assertEquals("No match found for individual!", exception.getMessage());
+    }
+
 }
