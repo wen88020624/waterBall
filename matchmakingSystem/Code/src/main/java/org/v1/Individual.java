@@ -3,14 +3,15 @@ package org.v1;
 import java.util.List;
 
 public class Individual {
+    private static int lastId = 1;
     private final int id;
     private Gender gender;
     private final int age;
     private String intro;
     private List<String> habits;
     private Coord coord;
-    private int lastId = 1;
     private final MatchmakingSystem matchmakingSystem;
+    private Individual matchWith;
 
     public Individual(Gender gender,
                       int age,
@@ -23,8 +24,7 @@ public class Individual {
         this.intro = intro;
         this.habits = List.of(habits.split(","));
         this.coord = coord;
-        this.lastId += 1;
-        this.id = this.lastId;
+        this.id = lastId ++;
         this.matchmakingSystem = matchmakingSystem;
         matchmakingSystem.register(this);
     }
@@ -71,5 +71,17 @@ public class Individual {
 
     public Coord getCoord() {
         return coord;
+    }
+
+    public int getLastId() {
+        return lastId;
+    }
+
+    public Individual getMatchWith() {
+        return this.matchWith;
+    }
+
+    public void setMatchWith(Individual matchWith) {
+        this.matchWith = matchWith;
     }
 }
