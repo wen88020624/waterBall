@@ -1,4 +1,4 @@
-package org.example;
+package s1;
 
 public abstract class Template {
     public void templateMethod(int[] k) {

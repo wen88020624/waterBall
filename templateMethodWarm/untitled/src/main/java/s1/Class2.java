@@ -1,4 +1,4 @@
-package org.example;
+package s1;
 
 public class Class2 extends Template {
 
