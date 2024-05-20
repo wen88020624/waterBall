@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Deck {
     private List<Card> cards;
-    private List<Card> discardPile;
 
+    private DiscardPile discardPile;
     public void shuffle() {
         Collections.shuffle(this.cards);
     }
@@ -16,11 +16,12 @@ public class Deck {
             return cards.remove(cards.size() - 1);
 
         } else {
-            Card topCard = discardPile.remove(discardPile.size() - 1);
-            Collections.shuffle(discardPile);
-            cards.addAll(discardPile);
-
+            discardPile.shuffleAndAddToDeck();
             return cards.remove(cards.size() - 1);
         }
+    }
+
+    public List<Card> getCards() {
+        return cards;
     }
 }
