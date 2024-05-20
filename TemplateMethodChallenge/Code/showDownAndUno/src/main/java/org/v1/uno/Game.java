@@ -5,6 +5,7 @@ import java.util.List;
 public class Game {
     private Deck deck;
     private List<Player> players;
+    private DiscardPile discardPile;
 
     public void start() {
         for (Player player : players) {
@@ -20,12 +21,20 @@ public class Game {
                 player.getHand().add(deck.drawCard());
         }
 
-        discardPile.add(deck.drawCard())
-        while(1)
-            for i=1; i<=4; i++
-        discardPile.addFirst(p[i].showCard(discardPile[0]))
-        if (p[i].hand.size()==0)
-            winner = p[i]
-        break
+        discardPile.addTop(deck.drawCard());
+
+        Player winner = null;
+        while(true) {
+            for (Player player : players) {
+                Card topCard = discardPile.getTopCard();
+                discardPile.addTop(player.showCard(topCard));
+                if (player.getHand().size() == 0) {
+                    winner = player;
+                    break;
+                }
+            }
+        }
+
+        System.out.println(winner.getName());
     }
 }
