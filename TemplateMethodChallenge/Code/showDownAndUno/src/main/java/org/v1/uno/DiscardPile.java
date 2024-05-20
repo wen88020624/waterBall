@@ -15,4 +15,11 @@ public class DiscardPile {
         cards.add(topCard);
     }
 
+    public void addTop(Card card) {
+        cards.add(card);
+    }
+
+    public Card getTopCard() {
+        return cards.get(cards.size() - 1);
+    }
 }
