@@ -1,25 +1,27 @@
 package org.v1.uno;
 
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class DiscardPile {
     private List<Card> cards;
-    private Deck deck;
 
-    public void shuffleAndAddToDeck() {
-        Card topCard = cards.remove(cards.size() - 1);
-        Collections.shuffle(cards);
-        deck.getCards().addAll(cards);
-        cards.clear();
-        cards.add(topCard);
+    public DiscardPile() {
+        this.cards = new LinkedList<>();
     }
 
-    public void addTop(Card card) {
-        cards.add(card);
+    public void addTop(Optional<Card> card) {
+        if (card.isPresent()){
+            cards.add(card.get());
+        }
     }
 
     public Card getTopCard() {
         return cards.get(cards.size() - 1);
+    }
+
+    public List<Card> getCards() {
+        return cards;
     }
 }
