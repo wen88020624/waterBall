@@ -11,12 +11,12 @@ public class Game {
     private DiscardPile discardPile;
 
     public Game() {
-        this.deck = new Deck();
+        this.discardPile = new DiscardPile();
+        this.deck = new Deck(discardPile);
         this.players = new LinkedList<>();
         for (int i=1; i<=4; i++) {
             this.players.add(new Player());
         }
-        this.discardPile = new DiscardPile();
     }
 
     public void start() {

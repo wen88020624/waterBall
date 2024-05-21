@@ -8,13 +8,14 @@ public class Deck {
     private List<Card> deck;
     private DiscardPile discardPile;
 
-    public Deck() {
+    public Deck(DiscardPile discardPile) {
         this.deck = new LinkedList<>();
         for (Number number : Number.values()) {
             for (Color color : Color.values()) {
                 this.deck.add(new Card(number, color));
             }
         }
+        this.discardPile = discardPile;
     }
 
     public void shuffle() {
