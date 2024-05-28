@@ -1,16 +1,13 @@
-package org.v1.uno;
+package org.v2.uno;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Game {
-    private Deck deck;
-    private List<Player> players;
+public class Uno extends GameTemplate {
     private DiscardPile discardPile;
 
-    public Game() {
+    public Uno() {
         this.discardPile = new DiscardPile();
         this.deck = new Deck(discardPile);
         this.players = new LinkedList<>();
@@ -35,7 +32,7 @@ public class Game {
                 player.getHand().add(deck.drawCard());
 
             String handDes = player.getHand().getCards().stream()
-                            .map(Card:: toString)
+                            .map(Card :: toString)
                     .collect(Collectors.joining(", "));
             System.out.println(player.getName() + " finished drawCard: " + handDes);
         }
@@ -58,17 +55,44 @@ public class Game {
         System.out.println("Winner is: " + winner.getName());
     }
 
-    private void playerTurn(Player player) {
+    @Override
+    protected Player findWinner() {
+        return  players.stream()
+                .filter(player -> player.getHand().size() == 0)
+                .findFirst().get();
+    }
+
+    @Override
+    protected void judge() {
+
+    }
+
+    @Override
+    protected boolean isFinishGame() {
+        return players.stream()
+                .anyMatch(player -> player.getHand().size() == 0);
+    }
+
+    @Override
+    protected void takeTurn(Player player) {
         Card topCard = discardPile.getTopCard();
         discardPile.addTop(player.showCard(topCard, this.deck));
 
         var discardPileDesc = discardPile.getCards().stream()
-                        .map(Card:: toString)
-                                .collect(Collectors.joining(", "));
+                .map(Card :: toString)
+                .collect(Collectors.joining(", "));
         System.out.println("discardPile: " + discardPileDesc);
     }
 
-    private boolean isPlayerWon(Player player) {
-        return player.getHand().size() == 0;
+    @Override
+    protected int getHandSize() {
+        return 5;
+    }
+
+    @Override
+    protected void prepareGame() {
+        deck.shuffle();
+
+        discardPile.addTop(Optional.of(deck.drawCard()));
     }
 }

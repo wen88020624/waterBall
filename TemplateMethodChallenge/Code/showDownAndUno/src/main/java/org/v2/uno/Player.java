@@ -1,4 +1,4 @@
-package org.v1.uno;
+package org.v2.uno;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class Player {
 
         if (showCard.isPresent()) {
             var handDes = hand.getCards().stream()
-                    .map(Card:: toString)
+                    .map(Card :: toString)
                     .collect(Collectors.joining(", "));
             System.out.println(name + " , hand: " + handDes + "topCard: " + topCard + " , showCard: " + showCard.toString());
             return showCard;
@@ -26,7 +26,7 @@ public class Player {
             var drawCard = deck.drawCard();
             hand.add(drawCard);
             var handDes = hand.getCards().stream()
-                    .map(Card:: toString)
+                    .map(Card :: toString)
                     .collect(Collectors.joining(", "));
             System.out.println(name + " , hand: " + handDes + " , drawCard: " + drawCard.toString());
             return Optional.empty();
