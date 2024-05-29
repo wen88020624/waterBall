@@ -1,12 +1,19 @@
 package org.v2.uno;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class GameTemplate {
     protected Deck deck;
     protected List<Player> players;
+
+    public GameTemplate() {
+        this.players = new LinkedList<>();
+        for (int i=1; i<=4; i++) {
+            this.players.add(new org.v2.uno.Player());
+        }
+    }
 
 
     protected void start() {
@@ -16,49 +23,21 @@ public abstract class GameTemplate {
 
         drawCard();
 
-        gameStart();
+        playGame();
+    }
+
+    protected void nameHimSelf() {
+        int index = 1;
+        for (Player player : players) {
+            player.nameHimself("P" + index);
+            System.out.println("P" + index +"'s name: " + player.getName());
+            index++;
+        }
     }
 
     protected void prepareGame() {
         deck.shuffle();
     }
-
-    protected void gameStart() {
-        Player winner = null;
-        boolean gameFinish = false;
-        while(!gameFinish) {
-            for (Player player : players) {
-                takeTurn(player);
-            }
-
-            printShowCard();
-
-            judge();
-
-            if (isFinishGame()) {
-                winner = findWinner();
-                gameFinish = true;
-                break;
-            }
-        }
-    }
-
-    protected abstract Player findWinner();
-
-    private void printShowCard() {
-        for (Player player : players) {
-            String handDes = player.getHand().getCards().stream()
-                    .map(Card::toString)
-                    .collect(Collectors.joining(", "));
-            System.out.println(player.getName() + " finished drawCard: " + handDes);
-        }
-    }
-
-    protected abstract void judge();
-
-    protected abstract boolean isFinishGame();
-
-    protected abstract void takeTurn(Player player);
 
     protected void drawCard() {
         for (Player player : players) {
@@ -73,14 +52,7 @@ public abstract class GameTemplate {
         }
     }
 
-    protected abstract int getHandSize();
+    protected abstract void playGame();
 
-    protected void nameHimSelf() {
-        int index = 1;
-        for (Player player : players) {
-            player.nameHimself("P" + index);
-            System.out.println("P" + index +"'s name: " + player.getName());
-            index++;
-        }
-    }
+    protected abstract int getHandSize();
 }
