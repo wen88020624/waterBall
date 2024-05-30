@@ -1,17 +1,27 @@
-package org.v2.uno;
+package org.v2;
+
+
+import org.v1.uno.DiscardPile;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public abstract class GameTemplate {
     protected Deck deck;
     protected List<Player> players;
+    protected DiscardPile discardPile;
 
     public GameTemplate() {
         this.players = new LinkedList<>();
         for (int i=1; i<=4; i++) {
-            this.players.add(new org.v2.uno.Player());
+            var random = new Random();
+            if (random.nextBoolean()) {
+                this.players.add(new AIPlayer());
+            } else {
+                this.players.add(new HumanPlayer());
+            }
         }
     }
 

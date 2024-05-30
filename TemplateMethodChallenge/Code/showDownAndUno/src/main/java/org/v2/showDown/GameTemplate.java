@@ -1,4 +1,8 @@
-package org.v2.uno;
+package org.v2.showDown;
+
+import org.v2.showDown.Card;
+import org.v2.showDown.Deck;
+import org.v2.showDown.Player;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,13 +15,13 @@ public abstract class GameTemplate {
     public GameTemplate() {
         this.players = new LinkedList<>();
         for (int i=1; i<=4; i++) {
-            this.players.add(new org.v2.uno.Player());
+            this.players.add(new Player());
         }
     }
 
 
     protected void start() {
-        nameHimself();
+        nameHimSelf();
 
         prepareGame();
 
@@ -26,7 +30,7 @@ public abstract class GameTemplate {
         playGame();
     }
 
-    protected void nameHimself() {
+    protected void nameHimSelf() {
         int index = 1;
         for (Player player : players) {
             player.nameHimself("P" + index);
