@@ -1,15 +1,11 @@
 package org.v2;
 
-import org.v2.showDown.Card;
-import org.v2.showDown.ExchangeHands;
-import org.v2.showDown.Hand;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class Player {
+public class ShowDownPlayer {
     private String name;
     private Integer point = 0;
     private Hand hand;
@@ -21,14 +17,14 @@ public class Player {
         this.name = name;
     }
 
-    public void takeTern(List<Player> players, HashMap<Player, org.v2.showDown.Card> playersShowCardEachRound) {
+    public void takeTern(List<ShowDownPlayer> players, HashMap<ShowDownPlayer, org.v2.showDown.Card> playersShowCardEachRound) {
         var otherPlayers = getOtherPlayers(players);
         makeExchangeHandsDecision(otherPlayers);
         playersShowCardEachRound.put(this, this.showCard());
         countDownRoundsAndExchangeBack(players);
     }
 
-    private void countDownRoundsAndExchangeBack(List<Player> players) {
+    private void countDownRoundsAndExchangeBack(List<ShowDownPlayer> players) {
         players.forEach(player -> {
             if (exchangee != null) {
                 exchangee.countDownRounds();
@@ -37,8 +33,8 @@ public class Player {
         });
     }
 
-    private List<Player> getOtherPlayers(List<Player> players) {
-        var otherPlayers = new ArrayList<Player>(players.size());
+    private List<ShowDownPlayer> getOtherPlayers(List<ShowDownPlayer> players) {
+        var otherPlayers = new ArrayList<ShowDownPlayer>(players.size());
         players.forEach(player -> {
             if (!player.equals(this)) {
                 otherPlayers.add(player);
@@ -47,7 +43,7 @@ public class Player {
         return otherPlayers;
     }
 
-    public void makeExchangeHandsDecision(List<Player> otherPlayers) {
+    public void makeExchangeHandsDecision(List<ShowDownPlayer> otherPlayers) {
         var isUseExchangeHands = getDecisionByRandom();
         System.out.println("player: "+this.getName()+". isUseExchangeHands: "+isUseExchangeHands);
         if (isUseExchangeHands) {
@@ -62,13 +58,13 @@ public class Player {
         return !this.hasExchangedHands && this.exchangee == null && random.nextBoolean();
     }
 
-    private Player chooseExchangee(List<Player> players) {
+    private ShowDownPlayer chooseExchangee(List<ShowDownPlayer> players) {
         Random random = new Random();
         int index = random.nextInt(players.size());
         return players.get(index);
     }
 
-    private void exchangeHand(Player exchangee) {
+    private void exchangeHand(ShowDownPlayer exchangee) {
         var exchangeHands = new ExchangeHands(this, exchangee);
         this.setExchangee(exchangeHands);
         exchangee.addExchanger(exchangeHands);

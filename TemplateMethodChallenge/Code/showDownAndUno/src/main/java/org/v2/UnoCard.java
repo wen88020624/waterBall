@@ -9,6 +9,7 @@ public class UnoCard extends Card{
         this.number = number;
     }
 
+    @Override
     public String toString() {
         return color + " of " + number;
     }

@@ -1,28 +1,37 @@
 package org.v2;
 
-import java.util.Optional;
+import java.util.LinkedList;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Uno extends GameTemplate {
 
     public Uno() {
-        super();
-        Deck<Card> deck = new Deck<>(CardFactory.createCards(CardType.UNO));
-        this.discardPile = new DiscardPile();
-        this.deck = new Deck(discardPile);
+        this.players = new LinkedList<>();
+        for (int i=1; i<=4; i++) {
+            var random = new Random();
+            if (random.nextBoolean()) {
+                this.players.add(new AIUnoPlayer());
+            } else {
+                this.players.add(new HumanUnoPlayer());
+            }
+        }
+        this.deck = new Deck<>(CardFactory.createCards(CardType.UNO));
+        this.discardPile = new DiscardPile<UnoCard>();
     }
 
     @Override
     protected void playGame() {
-        org.v2.uno.Player winner = null;
+        UnoPlayer winner = null;
         boolean gameWon = false;
+
         while(!gameWon) {
-            for (org.v2.uno.Player player : players) {
-                org.v2.uno.Card topCard = discardPile.getTopCard();
+            for (Object player : players) {
+                UnoCard topCard = (UnoCard) discardPile.getTopCards(1).get(0);
                 discardPile.addTop(player.showCard(topCard, this.deck));
 
                 var discardPileDesc = discardPile.getCards().stream()
-                        .map(Card:: toString)
+                        .map(UnoCard:: toString)
                         .collect(Collectors.joining(", "));
                 System.out.println("discardPile: " + discardPileDesc);
 
@@ -37,7 +46,7 @@ public class Uno extends GameTemplate {
         System.out.println("winner is " + winner.getName());
     }
 
-    private boolean isPlayerWon(Player player) {
+    private boolean isPlayerWon(ShowDownPlayer player) {
         return player.getHand().size() == 0;
     }
 
@@ -50,6 +59,6 @@ public class Uno extends GameTemplate {
     protected void prepareGame() {
         deck.shuffle();
 
-        discardPile.addTop(Optional.of(deck.drawCard()));
+        discardPile.addTop(deck.drawCard());
     }
 }

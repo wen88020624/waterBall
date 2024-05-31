@@ -9,6 +9,11 @@ public class PokerCard extends Card {
         this.rank = rank;
     }
 
+    @Override
+    public String toString() {
+        return rank + " of " + suit;
+    }
+
     public ShowDownResult showDown(org.v2.showDown.Card otherCard) {
         int rankCompare = this.rank.ordinal() - otherCard.getRank().ordinal();
         if (rankCompare != 0) {

@@ -14,7 +14,7 @@ public class showDown extends GameTemplate {
     protected void playGame() {
         for (int round=1; round<=13; round++) {
             System.out.println("round: "+round);
-            var playersShowCardEachRound = new HashMap<Player, Card>();
+            var playersShowCardEachRound = new HashMap<ShowDownPlayer, Card>();
             players.forEach(player -> {
                 player.takeTern(players, playersShowCardEachRound);
             });
@@ -42,7 +42,7 @@ public class showDown extends GameTemplate {
 
     private void printWinner() {
         int maxPoint = players.stream()
-                .mapToInt(Player::getPoint)
+                .mapToInt(ShowDownPlayer::getPoint)
                 .max()
                 .orElseThrow(() -> new IllegalArgumentException("List is empty"));
 
@@ -53,10 +53,10 @@ public class showDown extends GameTemplate {
         winners.forEach(player -> System.out.print("Last Winner is: " + player.getName() + ", point: " + player.getPoint()+"\n"));
     }
 
-    private Player showDown(HashMap<Player, Card> playersShowCardEachRound) {
-        Player winner = null;
+    private ShowDownPlayer showDown(HashMap<ShowDownPlayer, Card> playersShowCardEachRound) {
+        ShowDownPlayer winner = null;
         Card winnerCard = null;
-        for (Map.Entry<Player, Card> entry : playersShowCardEachRound.entrySet()) {
+        for (Map.Entry<ShowDownPlayer, Card> entry : playersShowCardEachRound.entrySet()) {
             var player = entry.getKey();
             var card = entry.getValue();
             if (winner == null || winnerCard.showDown(card) == ShowDownResult.SMALLER) {
@@ -68,7 +68,7 @@ public class showDown extends GameTemplate {
         return winner;
     }
 
-    private void printNameAndShowCard(HashMap<Player, Card> playersShowCardEachRound) {
+    private void printNameAndShowCard(HashMap<ShowDownPlayer, Card> playersShowCardEachRound) {
         playersShowCardEachRound.forEach((player, card) -> {
             System.out.println("Name: "+player.getName()+", Rank: "+card.getRank()+", Suit: "+card.getSuit());
         });

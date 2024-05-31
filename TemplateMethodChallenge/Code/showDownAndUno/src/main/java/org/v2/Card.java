@@ -1,4 +1,5 @@
 package org.v2;
 
-public class Card {
+public abstract class Card {
+    public abstract String toString();
 }

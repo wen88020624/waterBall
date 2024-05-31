@@ -1,14 +1,13 @@
 package org.v2;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class DiscardPile<T extends Card> {
     private List<T> cards;
 
     public DiscardPile() {
-        this.cards = new LinkedList<>();
+        this.cards = new ArrayList<>();
     }
 
     public void addTop(T card) {
