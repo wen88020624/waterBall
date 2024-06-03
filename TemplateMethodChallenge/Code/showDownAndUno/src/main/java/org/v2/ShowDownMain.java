@@ -1,10 +1,8 @@
 package org.v2;
 
-import org.v2.uno.Uno;
-
-public class Main {
+public class ShowDownMain {
     public static void main(String[] args) {
-        Uno game = new Uno();
+        var game = new ShowDown();
         game.start();
     }
 }

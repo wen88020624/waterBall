@@ -5,19 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class ShowDownPlayer {
-    private String name;
+public class ShowDownPlayer extends Player<ShowDownHand> {
     private Integer point = 0;
-    private Hand hand;
     private ExchangeHands exchangee;
     private final List<ExchangeHands> exchanger = new ArrayList<>(3);
     private boolean hasExchangedHands = false;
 
-    public void nameHimself(String name) {
-        this.name = name;
-    }
-
-    public void takeTern(List<ShowDownPlayer> players, HashMap<ShowDownPlayer, org.v2.showDown.Card> playersShowCardEachRound) {
+    public void takeTern(List<ShowDownPlayer> players, HashMap<ShowDownPlayer, PokerCard> playersShowCardEachRound) {
         var otherPlayers = getOtherPlayers(players);
         makeExchangeHandsDecision(otherPlayers);
         playersShowCardEachRound.put(this, this.showCard());
@@ -79,7 +73,7 @@ public class ShowDownPlayer {
                 "; exchangee: "+exchangee.getName()+", hand: "+exchangee.getHand());
     }
 
-    public Card showCard() {
+    public PokerCard showCard() {
         var random = new Random();
         var index = random.nextInt(this.getHand().getCards().size());
         return this.getHand().getCards().get(index);
@@ -104,11 +98,11 @@ public class ShowDownPlayer {
         return point;
     }
 
-    public Hand getHand() {
+    public ShowDownHand getHand() {
         return hand;
     }
 
-    public void setHand(Hand hand) {
+    public void setHand(ShowDownHand hand) {
         this.hand = hand;
     }
 

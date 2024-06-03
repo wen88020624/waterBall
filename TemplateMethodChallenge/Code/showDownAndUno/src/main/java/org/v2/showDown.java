@@ -1,27 +1,36 @@
 package org.v2;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.v1.uno.DiscardPile;
 
-public class showDown extends GameTemplate {
-    private final Deck deck = new Deck();
+import java.util.*;
 
-    public showDown() {
-        super();
+public class ShowDown extends GameTemplate {
+    private final List<ShowDownPlayer> players = new ArrayList<>(4);
+    private final PokerDeck deck = new PokerDeck();
+
+    @Override
+    protected Player createPlayer() {
+        var random = new Random();
+        if (random.nextBoolean()) {
+            return new HumanShowDownPlayer();
+        } else {
+            return new AIShowDownPlayer();
+        }
+    }
+
+    @Override
+    protected Deck createDeck() {
+        return new PokerDeck();
+    }
+
+    @Override
+    protected DiscardPile createDiscardPile() {
+        return new ShowDownDiscardPile();
     }
 
     @Override
     protected void playGame() {
-        for (int round=1; round<=13; round++) {
-            System.out.println("round: "+round);
-            var playersShowCardEachRound = new HashMap<ShowDownPlayer, Card>();
-            players.forEach(player -> {
-                player.takeTern(players, playersShowCardEachRound);
-            });
-            printNameAndShowCard(playersShowCardEachRound);
-            var winner = showDown(playersShowCardEachRound);
-            winner.gainPoint();
-        }
+        doThirteenRounds();
 
         calculatePoints();
 
@@ -53,10 +62,23 @@ public class showDown extends GameTemplate {
         winners.forEach(player -> System.out.print("Last Winner is: " + player.getName() + ", point: " + player.getPoint()+"\n"));
     }
 
-    private ShowDownPlayer showDown(HashMap<ShowDownPlayer, Card> playersShowCardEachRound) {
+    private void doThirteenRounds() {
+        for (int round=1; round<=13; round++) {
+            System.out.println("round: "+round);
+            var playersShowCardEachRound = new HashMap<ShowDownPlayer, PokerCard>();
+            players.forEach(player -> {
+                player.takeTern(players, playersShowCardEachRound);
+            });
+            printNameAndShowCard(playersShowCardEachRound);
+            var winner = showDown(playersShowCardEachRound);
+            winner.gainPoint();
+        }
+    }
+
+    private ShowDownPlayer showDown(HashMap<ShowDownPlayer, PokerCard> playersShowCardEachRound) {
         ShowDownPlayer winner = null;
-        Card winnerCard = null;
-        for (Map.Entry<ShowDownPlayer, Card> entry : playersShowCardEachRound.entrySet()) {
+        PokerCard winnerCard = null;
+        for (Map.Entry<ShowDownPlayer, PokerCard> entry : playersShowCardEachRound.entrySet()) {
             var player = entry.getKey();
             var card = entry.getValue();
             if (winner == null || winnerCard.showDown(card) == ShowDownResult.SMALLER) {
@@ -68,9 +90,10 @@ public class showDown extends GameTemplate {
         return winner;
     }
 
-    private void printNameAndShowCard(HashMap<ShowDownPlayer, Card> playersShowCardEachRound) {
+    private void printNameAndShowCard(HashMap<ShowDownPlayer, PokerCard> playersShowCardEachRound) {
         playersShowCardEachRound.forEach((player, card) -> {
             System.out.println("Name: "+player.getName()+", Rank: "+card.getRank()+", Suit: "+card.getSuit());
         });
     }
+
 }

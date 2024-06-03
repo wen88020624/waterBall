@@ -1,6 +1,6 @@
-package org.v2.uno;
+package org.v2;
 
-public class Main {
+public class UnoMain {
     public static void main(String[] args) {
         Uno game = new Uno();
         game.start();

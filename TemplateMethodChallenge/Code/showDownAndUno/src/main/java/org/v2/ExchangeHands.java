@@ -1,11 +1,11 @@
-package org.v2.showDown;
+package org.v2;
 
 public class ExchangeHands {
     private int roundsCountDown;
-    private final Player exchanger;
-    private final Player exchangee;
+    private final ShowDownPlayer exchanger;
+    private final ShowDownPlayer exchangee;
 
-    public ExchangeHands(Player exchanger, Player exchangee) {
+    public ExchangeHands(ShowDownPlayer exchanger, ShowDownPlayer exchangee) {
         this.roundsCountDown = 3;
         this.exchanger = exchanger;
         this.exchangee = exchangee;
@@ -30,7 +30,7 @@ public class ExchangeHands {
         this.roundsCountDown = this.roundsCountDown - 1;
     }
 
-    public Player getExchanger() {
+    public ShowDownPlayer getExchanger() {
         return exchanger;
     }
 }

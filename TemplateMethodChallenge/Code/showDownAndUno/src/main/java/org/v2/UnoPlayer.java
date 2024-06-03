@@ -3,21 +3,14 @@ package org.v2;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class UnoPlayer {
+public class UnoPlayer extends Player<UnoHand> {
 
-    private String name;
-    private Hand hand;
-
-    public UnoPlayer() {
-        this.hand = new Hand();
-    }
-
-    public Optional<Card> showCard(Card topCard, Deck deck) {
-        Optional<Card> showCard = hand.getShowCard(topCard);
+    public Optional<UnoCard> showCard(UnoCard topCard, UnoDeck deck) {
+        Optional<UnoCard> showCard = hand.getShowCard(topCard);
 
         if (showCard.isPresent()) {
             var handDes = hand.getCards().stream()
-                    .map(Card:: toString)
+                    .map(UnoCard:: toString)
                     .collect(Collectors.joining(", "));
             System.out.println(name + " , hand: " + handDes + "topCard: " + topCard + " , showCard: " + showCard.toString());
             return showCard;
@@ -26,7 +19,7 @@ public class UnoPlayer {
             var drawCard = deck.drawCard();
             hand.add(drawCard);
             var handDes = hand.getCards().stream()
-                    .map(Card:: toString)
+                    .map(UnoCard:: toString)
                     .collect(Collectors.joining(", "));
             System.out.println(name + " , hand: " + handDes + " , drawCard: " + drawCard.toString());
             return Optional.empty();
@@ -34,11 +27,7 @@ public class UnoPlayer {
 
     }
 
-    public void nameHimself(String name) {
-        this.name = name;
-    }
-
-    public Hand getHand() {
+    public UnoHand getHand() {
         return hand;
     }
 
