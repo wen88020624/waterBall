@@ -1,10 +1,10 @@
 package org.v2;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Hand <T extends Card> {
-
-    protected List<T> cards;
+public abstract class Hand<T extends Card> {
+    protected List<T> cards = new ArrayList<>();
 
     public void add(T card) {
         this.cards.add(card);
@@ -17,5 +17,4 @@ public class Hand <T extends Card> {
     public List<T> getCards() {
         return cards;
     }
-
 }

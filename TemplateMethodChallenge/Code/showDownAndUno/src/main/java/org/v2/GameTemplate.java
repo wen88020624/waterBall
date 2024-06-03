@@ -1,14 +1,15 @@
 package org.v2;
 
-import org.v1.uno.DiscardPile;
+import org.v2.uno.Deck;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public abstract class GameTemplate {
-    protected Deck deck;
-    protected List<Player> players;
-    protected DiscardPile discardPile;
+public abstract class GameTemplate<T extends Card> {
+    protected Deck<T> deck;
+    protected List<Player<T>> players;
+    protected DiscardPile<T> discardPile;
 
     public GameTemplate() {
         this.players = new ArrayList<>();
@@ -21,13 +22,13 @@ public abstract class GameTemplate {
         this.discardPile = createDiscardPile();
     }
 
-    protected abstract Player createPlayer();
+    protected abstract Player<T> createPlayer();
 
-    protected abstract Deck createDeck();
+    protected abstract Deck<T> createDeck();
 
-    protected abstract DiscardPile createDiscardPile();
+    protected abstract DiscardPile<T> createDiscardPile();
 
-    protected void start() {
+    public void start() {
         nameHimself();
 
         prepareGame();
@@ -39,7 +40,7 @@ public abstract class GameTemplate {
 
     protected void nameHimself() {
         int index = 1;
-        for (Player player : players) {
+        for (Player<T> player : players) {
             player.nameHimself("P" + index);
             System.out.println("P" + index +"'s name: " + player.getName());
             index++;
@@ -51,7 +52,7 @@ public abstract class GameTemplate {
     }
 
     protected void drawCard() {
-        for (Player player : players) {
+        for (Player<T> player : players) {
             while (player.getHand().size() < getHandSize()) {
                 player.getHand().add(deck.drawCard());
             }
