@@ -18,6 +18,7 @@ public class Deck {
 
     public void shuffle() {
         Collections.shuffle(cards);
+        System.out.println("Finished shuffling cards");
     }
 
     public Card drawCard() {

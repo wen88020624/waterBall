@@ -1,17 +1,16 @@
 package org.example;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-import static org.example.ValidationUtils.lengthShouldBe;
 import static org.example.ValidationUtils.requireNonNull;
 
 public abstract class Player {
     protected int playerNumber;
-    protected Set<Integer> chosenPlayers = new HashSet<>();
     private String name;
     protected Hand hand;
     private int point = 0;
-    private boolean hasUsedExchangeHands = false;
+    protected boolean hasUsedExchangeHands = false;
     protected List<ExchangeHand> exchangeHands;
 
     public Player() {
@@ -31,15 +30,6 @@ public abstract class Player {
 
     protected abstract Optional<Card> showCard();
 
-    private boolean makeDecision() {
-        if (hasUsedExchangeHands) {
-            return false;
-        }
-        //隨機決定是否要交換手牌
-        var random = new Random();
-        return random.nextBoolean();
-    }
-
     private void exchangeHands(List<Player> players) {
         hasUsedExchangeHands = true;
         Player exchangee = chooseExchangee(players);
@@ -50,6 +40,8 @@ public abstract class Player {
         exchangee.hand = temp;
     }
 
+    protected abstract boolean makeDecision();
+
     protected abstract Player chooseExchangee(List<Player> players);
 
     public void gainPoint() {
@@ -58,10 +50,6 @@ public abstract class Player {
 
     public void setName(String name) {
         this.name = requireNonNull(name);
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = lengthShouldBe(playerNumber, 1, 4);
     }
 
     public List<ExchangeHand> getExchangeHands() {

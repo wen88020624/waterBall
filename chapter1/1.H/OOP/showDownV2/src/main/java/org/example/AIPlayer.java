@@ -7,8 +7,9 @@ import java.util.Random;
 public class AIPlayer extends Player{
     @Override
     public void nameHimself() {
-        Random random = new Random(4);
-        setName("AIPlayer" + random + 1);
+        Random random = new Random();
+        setName("AIPlayer" + random.nextInt(9999));
+        System.out.println("You have named yourself: " + this.getName());
     }
 
     @Override
@@ -16,6 +17,15 @@ public class AIPlayer extends Player{
         Random random = new Random();
         int cardIndex = random.nextInt(getHand().getCards().size() - 1);
         return Optional.of(getHand().getCards().get(cardIndex));
+    }
+
+    @Override
+    protected boolean makeDecision() {
+        if (hasUsedExchangeHands) {
+            return false;
+        }
+        Random random = new Random();
+        return random.nextBoolean();
     }
 
     @Override

@@ -15,7 +15,6 @@ public class HumanPlayer extends Player {
         boolean validInput = false;
 
         while (!validInput) {
-            System.out.println("P" + playerNumber + " Please name yourself: ");
             String name = scanner.nextLine();
 
             if (name != null && !name.trim().isEmpty()) {
@@ -64,6 +63,19 @@ public class HumanPlayer extends Player {
 
         System.out.println("You have chosen card: " + card.toString());
         return Optional.of(card);
+    }
+
+    @Override
+    protected boolean makeDecision() {
+        Scanner scanner = new Scanner(System.in);
+        boolean invalidInput = false;
+
+        while(!invalidInput) {
+            System.out.println("Please make a decision to exchange hand, 1 is exchange, 0 is not exchange.");
+
+
+        }
+        return false;
     }
 
     private void printHands() {

@@ -17,11 +17,20 @@ public class Game {
     }
 
     public void start() {
-        for (Player player : players) {
-            player.nameHimself();
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println("P" + (i+1) + " Please name yourself: ");
+            players.get(i).nameHimself();
         }
 
         deck.shuffle();
+
+        for (int i = 0; i<players.size(); i++) {
+            while (players.get(i).getHand().size() < 13) {
+                players.get(i).getHand().add(deck.drawCard());
+            }
+            System.out.println("P" + (i+1) + ", name: " + players.get(i).getName() +
+                    ", finished draw card, hand size: " + players.get(i).getHand().size());
+        }
 
         for (int tern=1; tern<=13; tern++) {
             List<Optional<Card>> cards = new ArrayList<>();
@@ -34,32 +43,28 @@ public class Game {
                         String cardDescription = cards.get(index)
                                 .map(Card::toString)
                                 .orElse("No show card");
-                        return "P" + (index + 1) + " show card: " + cardDescription;
+                        return "P" + (index + 1) + ", " + players.get(index).getName() + " show card: " + cardDescription;
                     })
                     .collect(Collectors.joining("\n"));
             System.out.println(playerOfShowCard);
 
-            int maxIndex = 0;
-            for (int index=0; index<cards.size()-1; index++) {
-                if (cards.get(maxIndex).isEmpty()) {
-                    maxIndex = index;
+            int maxIndex = -1;
+            for (int index = 0; index < cards.size(); index++) {
+                if (cards.get(index).isEmpty()) {
                     continue;
                 }
-                if (cards.get(index).isPresent()) {
-                    ShowDownResult result = cards.get(index).get().showDown(cards.get(maxIndex).get());
-
-                    if (result==ShowDownResult.BIGGER) {
-                        maxIndex = index;
-                    }
+                if (maxIndex == -1 || cards.get(index).get().showDown(cards.get(maxIndex).get()) == ShowDownResult.BIGGER) {
+                    maxIndex = index;
                 }
             }
+
             Player winner = players.get(maxIndex);
             winner.gainPoint();
         }
 
-        Player winner = players.stream()
+        Player finalWinner = players.stream()
                 .max(Comparator.comparing(Player::getPoint))
-                .orElseThrow(() -> new RuntimeException("winner not found"));
-        System.out.println("Winner is " + winner.getName() + ", Point: " + winner.getPoint());
+                .orElseThrow(() -> new RuntimeException("No winner!"));
+        System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
     }
 }
