@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class AIPlayer extends Player{
     @Override
-    protected void nameHimself() {
+    public void nameHimself() {
         Random random = new Random(4);
         setName("AIPlayer" + random + 1);
     }
@@ -23,27 +23,8 @@ public class AIPlayer extends Player{
         Random random = new Random();
         int playerNumber = 1 + random.nextInt(4);
         return players.stream()
-                .filter(player -> player.getPlayerNumber() == playerNumber)
+                .filter(player -> player.playerNumber == playerNumber)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Player not found"));
-    }
-
-    @Override
-    protected void choosePlayer() {
-        Random random = new Random();
-        int number = 0;
-        boolean validInput = false;
-
-        while (!validInput) {
-            number = 1 + random.nextInt(4);
-
-            if (!chosenPlayers.contains(number)) {
-                setPlayerNumber(number);
-                chosenPlayers.add(number);
-                validInput = true;
-            }
-        }
-
-        System.out.println("AI has chosen player: P" + number);
     }
 }

@@ -52,15 +52,13 @@ public abstract class Player {
 
     protected abstract Player chooseExchangee(List<Player> players);
 
-    private void gainPoint() {
+    public void gainPoint() {
         point++;
     }
 
     public void setName(String name) {
         this.name = requireNonNull(name);
     }
-
-    protected abstract void choosePlayer();
 
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = lengthShouldBe(playerNumber, 1, 4);
@@ -76,5 +74,9 @@ public abstract class Player {
 
     public String getName() {
         return this.name;
+    }
+
+    public int getPoint() {
+        return point;
     }
 }

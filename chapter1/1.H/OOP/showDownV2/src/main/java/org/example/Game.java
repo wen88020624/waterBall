@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class Game {
 
         deck.shuffle();
 
-        for (int i=1; i<=13; i++) {
+        for (int tern=1; tern<=13; tern++) {
             List<Optional<Card>> cards = new ArrayList<>();
             for (Player player : players) {
                 cards.add(player.takeTern(players));
@@ -38,13 +39,27 @@ public class Game {
                     .collect(Collectors.joining("\n"));
             System.out.println(playerOfShowCard);
 
-            Player winner = IntStream.range(0, cards.size())
-                    .mapToObj(index -> {
-                        if (cards.get(index).isPresent()) {
+            int maxIndex = 0;
+            for (int index=0; index<cards.size()-1; index++) {
+                if (cards.get(maxIndex).isEmpty()) {
+                    maxIndex = index;
+                    continue;
+                }
+                if (cards.get(index).isPresent()) {
+                    ShowDownResult result = cards.get(index).get().showDown(cards.get(maxIndex).get());
 
-                        }
-                    })
-
+                    if (result==ShowDownResult.BIGGER) {
+                        maxIndex = index;
+                    }
+                }
+            }
+            Player winner = players.get(maxIndex);
+            winner.gainPoint();
         }
+
+        Player winner = players.stream()
+                .max(Comparator.comparing(Player::getPoint))
+                .orElseThrow(() -> new RuntimeException("winner not found"));
+        System.out.println("Winner is " + winner.getName() + ", Point: " + winner.getPoint());
     }
 }

@@ -111,34 +111,4 @@ public class HumanPlayer extends Player {
 
         return exchangee;
     }
-
-    @Override
-    protected void choosePlayer() {
-        Scanner scanner = new Scanner(System.in);
-        int number = 0;
-        boolean validInput = false;
-
-        while (!validInput) {
-            System.out.println("Please choose a player (1 to 4), already chosen: " + chosenPlayers);
-
-            if (scanner.hasNextInt()) {
-                number = scanner.nextInt();
-
-                if (number >= 1 && number <= 4 && !chosenPlayers.contains(number)) {
-                    validInput = true;
-                    this.setPlayerNumber(number);
-                    chosenPlayers.add(number);
-
-                } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 4.");
-                    scanner.nextLine();
-                }
-            } else {
-                System.out.println("Invalid input. Please enter a number between 1 and 4.");
-                scanner.nextLine();
-            }
-        }
-
-        System.out.println("You have chosen player: P" + number);
-    }
 }
