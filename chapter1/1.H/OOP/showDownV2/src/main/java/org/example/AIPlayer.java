@@ -3,6 +3,7 @@ package org.example;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class AIPlayer extends Player{
     @Override
@@ -16,7 +17,7 @@ public class AIPlayer extends Player{
     protected Optional<Card> showCard() {
         Random random = new Random();
         int cardIndex = random.nextInt(getHand().getCards().size() - 1);
-        return Optional.of(getHand().getCards().get(cardIndex));
+        return Optional.of(getHand().getCards().remove(cardIndex));
     }
 
     @Override
@@ -25,16 +26,20 @@ public class AIPlayer extends Player{
             return false;
         }
         Random random = new Random();
-        return random.nextBoolean();
+        boolean decision = random.nextBoolean();
+        System.out.println("P" + getId() + ", name: " + getName() + " , make decision: " + decision);
+        return decision;
     }
 
     @Override
     protected Player chooseExchangee(List<Player> players) {
+        List<Player> otherPlayers = players.stream()
+                .filter(player -> player.getId() != this.getId())
+                .toList();
+
         Random random = new Random();
-        int playerNumber = 1 + random.nextInt(4);
-        return players.stream()
-                .filter(player -> player.playerNumber == playerNumber)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+        Player exchangee = otherPlayers.get(random.nextInt(3));
+        System.out.println("Choose exchangee: P" + exchangee.getId() + " , name: " + exchangee.getName());
+        return exchangee;
     }
 }

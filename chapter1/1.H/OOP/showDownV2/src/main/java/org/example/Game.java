@@ -32,7 +32,8 @@ public class Game {
                     ", finished draw card, hand size: " + players.get(i).getHand().size());
         }
 
-        for (int tern=1; tern<=13; tern++) {
+        for (int round=1; round<=13; round++) {
+            System.out.println("round: " + round);
             List<Optional<Card>> cards = new ArrayList<>();
             for (Player player : players) {
                 cards.add(player.takeTern(players));
@@ -43,7 +44,9 @@ public class Game {
                         String cardDescription = cards.get(index)
                                 .map(Card::toString)
                                 .orElse("No show card");
-                        return "P" + (index + 1) + ", " + players.get(index).getName() + " show card: " + cardDescription;
+                        return "P" + (index + 1) + ", " + players.get(index).getName() +
+                                " show card: " + cardDescription +
+                                " , hand: " + players.get(index).getHand().printHand();
                     })
                     .collect(Collectors.joining("\n"));
             System.out.println(playerOfShowCard);
@@ -59,6 +62,7 @@ public class Game {
             }
 
             Player winner = players.get(maxIndex);
+            System.out.println("winner: " + winner.getName() + " , show card: " + cards.get(maxIndex).get().toString());
             winner.gainPoint();
         }
 

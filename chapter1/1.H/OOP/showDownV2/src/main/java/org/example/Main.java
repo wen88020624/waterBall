@@ -7,8 +7,8 @@ public class Main {
         Game game = new Game(
                 List.of(
                         new AIPlayer(),
-                        new HumanPlayer(),
-                        new HumanPlayer(),
+                        new AIPlayer(),
+                        new AIPlayer(),
                         new AIPlayer()
                 )
         );

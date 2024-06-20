@@ -72,7 +72,14 @@ public class HumanPlayer extends Player {
 
         while(!invalidInput) {
             System.out.println("Please make a decision to exchange hand, 1 is exchange, 0 is not exchange.");
-
+            if (scanner.hasNextInt()) {
+                String decicion = scanner.nextLine();
+                invalidInput = true;
+                return "1".equals(decicion);
+            } else {
+                System.out.println("Invalid input");
+                return false;
+            }
 
         }
         return false;
