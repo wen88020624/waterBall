@@ -15,9 +15,19 @@ public class AIPlayer extends Player{
 
     @Override
     protected Optional<Card> showCard() {
-        Random random = new Random();
-        int cardIndex = random.nextInt(getHand().getCards().size() - 1);
-        return Optional.of(getHand().getCards().remove(cardIndex));
+        if (this.getHand().size() == 0) {
+            return Optional.empty();
+
+        } else if (this.getHand().size() == 1) {
+            return Optional.of(getHand().getCards().remove(0));
+
+        } else {
+            Random random = new Random();
+            System.out.println("hand: " + this.getHand().printHand() + " , handSize: "+ getHand().getCards().size() + ", showCardIndex: " + random.nextInt(getHand().getCards().size() - 1));
+            int cardIndex = random.nextInt(getHand().getCards().size() - 1);
+            return Optional.of(getHand().getCards().remove(cardIndex));
+        }
+
     }
 
     @Override

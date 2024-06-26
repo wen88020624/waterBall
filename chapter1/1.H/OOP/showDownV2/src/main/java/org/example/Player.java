@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,14 +13,25 @@ public abstract class Player {
     protected Hand hand;
     private int point = 0;
     protected boolean hasUsedExchangeHands = false;
+
     protected List<ExchangeHand> exchangeHands;
+
     public Player() {
         id = ++playerNumber;
         this.hand = new Hand();
+        setExchangeHands(new ArrayList<>());
     }
 
     public abstract void nameHimself();
+
     public Optional<Card> takeTern(List<Player> players) {
+        for (ExchangeHand exchangeHand: exchangeHands) {
+            exchangeHand.updateRemainTern();
+            if (exchangeHand.getRemainTern() == 0) {
+                exchangeHand.exchangeHandsBack();
+            }
+        }
+
         boolean isUse = makeDecision();
 
         if (isUse) {
@@ -28,7 +40,6 @@ public abstract class Player {
 
         return showCard();
     }
-
     protected abstract Optional<Card> showCard();
 
     private void exchangeHands(List<Player> players) {
@@ -76,5 +87,9 @@ public abstract class Player {
 
     public int getId() {
         return id;
+    }
+
+    public void setExchangeHands(List<ExchangeHand> exchangeHands) {
+        this.exchangeHands = exchangeHands;
     }
 }

@@ -34,6 +34,7 @@ public class Game {
 
         for (int round=1; round<=13; round++) {
             System.out.println("round: " + round);
+
             List<Optional<Card>> cards = new ArrayList<>();
             for (Player player : players) {
                 cards.add(player.takeTern(players));
@@ -46,7 +47,8 @@ public class Game {
                                 .orElse("No show card");
                         return "P" + (index + 1) + ", " + players.get(index).getName() +
                                 " show card: " + cardDescription +
-                                " , hand: " + players.get(index).getHand().printHand();
+                                " , hand: " + players.get(index).getHand().printHand() +
+                                " , handSize: " + players.get(index).getHand().size();
                     })
                     .collect(Collectors.joining("\n"));
             System.out.println(playerOfShowCard);

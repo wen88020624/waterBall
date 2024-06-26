@@ -20,4 +20,12 @@ public class ExchangeHand {
         exchanger.getExchangeHands().remove(this);
         exchangee.getExchangeHands().remove(this);
     }
+
+    public void updateRemainTern() {
+        remainTern--;
+    }
+
+    public int getRemainTern() {
+        return remainTern;
+    }
 }
