@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,18 +13,17 @@ public abstract class Player {
     private int point = 0;
     protected boolean hasUsedExchangeHands = false;
 
-    protected List<ExchangeHand> exchangeHands;
+    protected ExchangeHand exchangeHand;
 
     public Player() {
         id = ++playerNumber;
         this.hand = new Hand();
-        setExchangeHands(new ArrayList<>());
     }
 
     public abstract void nameHimself();
 
     public Optional<Card> takeTern(List<Player> players) {
-        for (ExchangeHand exchangeHand: exchangeHands) {
+        if (exchangeHand != null) {
             exchangeHand.updateRemainTern();
             if (exchangeHand.getRemainTern() == 0) {
                 exchangeHand.exchangeHandsBack();
@@ -40,6 +38,7 @@ public abstract class Player {
 
         return showCard();
     }
+
     protected abstract Optional<Card> showCard();
 
     private void exchangeHands(List<Player> players) {
@@ -48,6 +47,10 @@ public abstract class Player {
         System.out.println("Before exchange." + "\n" +
                 "Exchanger: " + getName() + " , Exchanger.hand: " + getHand().printHand() + "\n" +
                 "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
+
+        var exchangeHand = new ExchangeHand(this, exchangee);
+        this.setExchangeHand(exchangeHand);
+
         //交換手牌
         Hand temp = this.hand;
         this.hand = exchangee.hand;
@@ -69,10 +72,6 @@ public abstract class Player {
         this.name = requireNonNull(name);
     }
 
-    public List<ExchangeHand> getExchangeHands() {
-        return exchangeHands;
-    }
-
     public Hand getHand() {
         return hand;
     }
@@ -89,7 +88,7 @@ public abstract class Player {
         return id;
     }
 
-    public void setExchangeHands(List<ExchangeHand> exchangeHands) {
-        this.exchangeHands = exchangeHands;
+    public void setExchangeHand(ExchangeHand exchangeHand) {
+        this.exchangeHand = exchangeHand;
     }
 }

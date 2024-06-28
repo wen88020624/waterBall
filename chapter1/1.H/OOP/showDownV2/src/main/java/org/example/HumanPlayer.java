@@ -30,9 +30,8 @@ public class HumanPlayer extends Player {
 
     @Override
     protected Optional<Card> showCard() {
-        //如果有玩家在換牌之後，發現沒有牌出了
-        //此時該玩家可以不必出牌，並在此輪無法參與比大小決勝。
-        if (hand.getCards().isEmpty() && !exchangeHands.isEmpty()) {
+        //如果有玩家在換牌之後，發現沒有牌出了，此時該玩家可以不必出牌，並在此輪無法參與比大小決勝。
+        if (hand.getCards().isEmpty() && exchangeHand != null) {
             return Optional.empty();
         }
 

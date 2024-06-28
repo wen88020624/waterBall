@@ -13,16 +13,23 @@ public class ExchangeHand {
     }
 
     public void exchangeHandsBack() {
+        System.out.println("Before exchange back." + "\n" +
+                "Exchanger: " + exchanger.getName() + " , Exchanger.hand: " + exchanger.getHand().printHand() + "\n" +
+                "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
         List<Card> temp = exchanger.getHand().getCards();
         exchanger.getHand().setCards(exchangee.getHand().getCards());
         exchangee.getHand().setCards(temp);
 
-        exchanger.getExchangeHands().remove(this);
-        exchangee.getExchangeHands().remove(this);
+        exchanger.setExchangeHand(null);
+
+        System.out.println("Exchange back." + "\n" +
+                "Exchanger: " + exchanger.getName() + " , Exchanger.hand: " + exchanger.getHand().printHand() + "\n" +
+                "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
     }
 
     public void updateRemainTern() {
         remainTern--;
+        System.out.println("exchanger: " + exchanger.getName() + " , exchangee: " + exchangee.getName() + " , remainTern: " + remainTern);
     }
 
     public int getRemainTern() {
