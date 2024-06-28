@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class HumanPlayer extends Player {
 
                 if (number >= 1 && number <= hand.getCards().size()) {
                     validInput = true;
-                    card = hand.getCards().remove(number);
+                    card = hand.getCards().remove(number - 1);
 
                 } else {
                     System.out.println("Invalid input. Please enter a number between 1 and " + hand.getCards().size());
@@ -66,6 +67,10 @@ public class HumanPlayer extends Player {
 
     @Override
     protected boolean makeDecision() {
+        if (hasUsedExchangeHands) {
+            return false;
+        }
+
         Scanner scanner = new Scanner(System.in);
         boolean invalidInput = false;
 
@@ -91,6 +96,12 @@ public class HumanPlayer extends Player {
         System.out.println("Please choose your showCard: " + handDes);
     }
 
+    private String printAllPlayers(List<Player> players) {
+        return players.stream()
+                .map(player -> "ID:" + player.getId() + ",Name:" + player.getName())
+                .collect(Collectors.joining(" , "));
+    }
+
     @Override
     protected Player chooseExchangee(List<Player> players) {
         Scanner scanner = new Scanner(System.in);
@@ -98,35 +109,27 @@ public class HumanPlayer extends Player {
         Player exchangee = null;
 
         while (!validInput) {
-            System.out.println("Please choose a player (1 to 4), Can not choose myself, your number is: " + playerNumber);
-
+            System.out.println("Please choose a player by ID (cannot choose yourself), " + printAllPlayers(players));
             if (scanner.hasNextInt()) {
-                int number = scanner.nextInt();
+                int chosenId = scanner.nextInt();
                 scanner.nextLine();
 
-                if (number == playerNumber) {
-                    System.out.println("Can not choose myself.");
-                } else if (number >= 1 && number <= 4) {
-                    Optional<Player> playerOpt = players.stream()
-                            .filter(player -> player.playerNumber == number)
-                            .findFirst();
-
-                    if (playerOpt.isPresent()) {
-                        exchangee = playerOpt.get();
-                        validInput = true;
-                        System.out.println("You have chosen player: P" + number);
-                    } else {
-                        System.out.println("No player found with number " + number);
-                    }
+                if (chosenId > 0 && chosenId <= players.size() && players.get(chosenId - 1) != this) {
+                    exchangee = players.get(chosenId - 1);
+                    validInput = true;
+                    System.out.println("You have chosen an exchangee named: " + exchangee.getName());
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                    if (chosenId == this.getId()) {
+                        System.out.println("Cannot choose myself.");
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid player ID.");
+                    }
                 }
             } else {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine();
+                scanner.next();
+                System.out.println("Invalid input. Please enter a number.");
             }
         }
-
         return exchangee;
     }
 }

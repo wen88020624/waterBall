@@ -6,8 +6,8 @@ import java.util.Optional;
 import static org.example.ValidationUtils.requireNonNull;
 
 public abstract class Player {
-    protected static int playerNumber;
-    protected final int id;
+    private static int lastId = 0;
+    private final int id;
     private String name;
     protected Hand hand;
     private int point = 0;
@@ -16,7 +16,7 @@ public abstract class Player {
     protected ExchangeHand exchangeHand;
 
     public Player() {
-        id = ++playerNumber;
+        id = ++lastId;
         this.hand = new Hand();
     }
 
