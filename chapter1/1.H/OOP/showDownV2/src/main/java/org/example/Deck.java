@@ -9,8 +9,8 @@ public class Deck {
 
     public Deck() {
         this.cards = new ArrayList<>();
-        for (Rank rank : Rank.values()) {
-            for (Suit suit : Suit.values()) {
+        for (Card.Rank rank : Card.Rank.values()) {
+            for (Card.Suit suit : Card.Suit.values()) {
                 cards.add(new Card(rank, suit));
             }
         }

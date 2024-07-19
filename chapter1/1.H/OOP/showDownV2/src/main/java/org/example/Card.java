@@ -4,6 +4,18 @@ public class Card {
     private final Rank rank;
     private final Suit suit;
 
+    public enum Rank {
+        TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JAKE, QUEEN, KING, ACE
+    }
+
+    public enum ShowDownResult {
+        BIGGER, SMALLER
+    }
+
+    public enum Suit {
+        CLUB, DIAMAND, HEART, SPADE
+    }
+
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
