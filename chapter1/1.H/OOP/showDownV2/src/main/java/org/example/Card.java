@@ -13,7 +13,18 @@ public class Card {
     }
 
     public enum Suit {
-        CLUB, DIAMAND, HEART, SPADE
+        SPADE('♠'), HEART('♥'), DIAMOND('♦'), CLUB('♣');
+
+        private final char representation;
+
+        Suit(char representation) {
+            this.representation = representation;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(representation);
+        }
     }
 
     public Card(Rank rank, Suit suit) {
@@ -29,9 +40,5 @@ public class Card {
             return this.rank.ordinal() > otherCard.rank.ordinal()
                     ? ShowDownResult.BIGGER : ShowDownResult.SMALLER;
         }
-    }
-
-    public String toString() {
-        return rank + " of " + suit;
     }
 }
