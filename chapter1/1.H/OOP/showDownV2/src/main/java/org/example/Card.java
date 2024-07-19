@@ -1,6 +1,6 @@
 package org.example;
 
-public class Card {
+public class Card implements Comparable<Card>{
     private final Rank rank;
     private final Suit suit;
 
@@ -48,13 +48,19 @@ public class Card {
         this.suit = suit;
     }
 
-    public ShowDownResult showDown(Card otherCard) {
-        if (this.rank.ordinal() == otherCard.rank.ordinal()) {
-            return this.suit.ordinal() > otherCard.suit.ordinal()
-                    ? ShowDownResult.BIGGER : ShowDownResult.SMALLER;
-        } else {
-            return this.rank.ordinal() > otherCard.rank.ordinal()
-                    ? ShowDownResult.BIGGER : ShowDownResult.SMALLER;
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if (this.getRank() == card.getRank()) {
+            return this.getSuit().compareTo(card.getSuit());
         }
+        return this.getRank().compareTo(card.getRank());
     }
 }

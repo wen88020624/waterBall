@@ -58,7 +58,7 @@ public class Game {
                 if (cards.get(index).isEmpty()) {
                     continue;
                 }
-                if (maxIndex == -1 || cards.get(index).get().showDown(cards.get(maxIndex).get()) == Card.ShowDownResult.BIGGER) {
+                if (maxIndex == -1 || cards.get(index).get().compareTo(cards.get(maxIndex).get())) {
                     maxIndex = index;
                 }
             }
