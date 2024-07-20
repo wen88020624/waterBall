@@ -1,3 +1,5 @@
+package v1;
+
 public class Hero {
     private final String name;
     private final String attackType;

@@ -1,3 +1,5 @@
+package v1;
+
 import static java.util.Arrays.asList;
 
 public class Main {
