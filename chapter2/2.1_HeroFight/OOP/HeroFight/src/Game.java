@@ -1,5 +1,7 @@
 import java.util.List;
 
+import static java.util.Collections.swap;
+
 public class Game {
     private final List<Hero> heros;
 
@@ -8,32 +10,19 @@ public class Game {
     }
 
     public void start() {
-        int turn = 0;
-        boolean gameOver = false;
-        Hero winner = null;
-        Hero hero1 = heros.get(0);
-        Hero hero2 = heros.get(1);
+        nextTern();
 
-        while (!gameOver) {
-            System.out.println("Turn: " + turn);
+    }
 
-            if (turn % 2 == 0) {
-                hero1.attack(hero2);
-                if (hero2.isDead()) {
-                    gameOver = true;
-                    winner = hero1;
-                }
-            } else {
-                hero2.attack(hero1);
-                if (hero1.isDead()) {
-                    gameOver = true;
-                    winner = hero2;
-                }
-            }
-
-            turn++;
+    private void nextTern() {
+        Hero attacker = heros.get(0);
+        Hero defender = heros.get(1);
+        attacker.attack(defender);
+        swap(heros, 0, 1);
+        if (defender.isDead()) {
+            System.out.println("Game over, winner is: " + attacker.getName());
+        } else {
+            nextTern();
         }
-
-        System.out.println("Game over, winner is: " + winner.getName());
     }
 }
