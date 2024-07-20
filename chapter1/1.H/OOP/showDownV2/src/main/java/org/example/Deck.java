@@ -1,27 +1,38 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Stack;
 
 public class Deck {
-    private List<Card> cards;
+    private final Stack<Card> cardStack = new Stack<>();
 
-    public Deck() {
-        this.cards = new ArrayList<>();
-        for (Card.Rank rank : Card.Rank.values()) {
-            for (Card.Suit suit : Card.Suit.values()) {
-                cards.add(new Card(rank, suit));
+    public static Deck standard52Cards() {
+        Deck deck = new Deck();
+        Card.Suit[] suits = Card.Suit.values();
+        Card.Rank[] ranks = Card.Rank.values();
+
+        for (Card.Suit suit : suits) {
+            for (Card.Rank rank : ranks) {
+                deck.push(new Card(rank, suit));
             }
         }
+        return deck;
+    }
+
+    private void push(Card card) {
+        cardStack.push(card);
     }
 
     public void shuffle() {
-        Collections.shuffle(cards);
+        Collections.shuffle(cardStack);
         System.out.println("Finished shuffling cards");
     }
 
-    public Card drawCard() {
-        return cards.remove(cards.size() - 1);
+    public Card draw() {
+        return cardStack.pop();
+    }
+
+    public int size() {
+        return cardStack.size();
     }
 }

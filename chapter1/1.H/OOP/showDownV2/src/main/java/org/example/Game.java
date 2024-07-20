@@ -26,7 +26,7 @@ public class Game {
 
         for (int i = 0; i<players.size(); i++) {
             while (players.get(i).getHand().size() < 13) {
-                players.get(i).getHand().add(deck.drawCard());
+                players.get(i).getHand().add(deck.draw());
             }
             System.out.println("P" + (i+1) + ", name: " + players.get(i).getName() +
                     ", finished draw card, hand size: " + players.get(i).getHand().size());
