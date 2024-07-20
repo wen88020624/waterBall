@@ -2,6 +2,7 @@ public class Hero {
     private final String name;
     private final String attackType;
     private int hp = 500;
+
     public Hero(String name, String attackType) {
         this.name = name;
         this.attackType = attackType;
@@ -9,20 +10,27 @@ public class Hero {
 
     public void attack(Hero defender) {
         System.out.println(this.getName() + " attack " + defender.getName());
-        if (attackType == "waterBall") {
-            defender.setHp((int) (defender.getHp() - this.getHp() * 0.5));
+        switch (attackType) {
+            case "waterBall":
+                defender.damage((int) (this.getHp() * 0.5));
+                break;
+            case "fireBall":
+                for (int i=0; i<=3; i++) {
+                    defender.damage(50);
+                }
+                break;
 
-        } else if (attackType == "fireBall") {
-            for (int i=0; i<=3; i++) {
-                defender.setHp((defender.getHp() - 50));
-            }
-
-        } else if (attackType == "earth") {
-            for (int i=0; i<=10; i++) {
-                defender.setHp((defender.getHp() - 20));
-            }
+            case "earth":
+                for (int i=0; i<=10; i++) {
+                    defender.damage(20);
+                }
+                break;
         }
         System.out.println(defender.getName() + " remain hp: " + defender.getHp());
+    }
+
+    private void damage(int damage) {
+        this.setHp(hp - damage);
     }
 
     public boolean isDead() {
