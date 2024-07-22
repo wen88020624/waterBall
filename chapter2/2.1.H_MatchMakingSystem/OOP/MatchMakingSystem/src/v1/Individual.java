@@ -12,6 +12,8 @@ public class Individual {
     private Coord coord;
     private String matchStrategy;
 
+    private Individual matchPerson;
+
     public Individual(Gender gender, int age, String intro, List<String> habits, Coord coord, String matchStrategy) {
         this.userId = id++;
         this.gender = gender;
@@ -22,6 +24,13 @@ public class Individual {
         this.matchStrategy = matchStrategy;
     }
 
+    public void match(Individual individual) {
+        this.matchPerson = individual;
+    }
+
+    public double distanceTo(Individual individual) {
+        return this.getCoord().distanceTo(individual.getCoord());
+    }
 
     public List<String> getHabits() {
         return habits;
@@ -46,6 +55,11 @@ public class Individual {
         public Coord(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        public double distanceTo(Coord otherPeopleCoord) {
+            return Math.sqrt(Math.pow(this.x - otherPeopleCoord.x, 2)
+                    + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
     }
 
