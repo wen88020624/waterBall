@@ -57,6 +57,7 @@ public class MatchMakingSystem {
                 }
                 matcher.match(minInterest);
             }
+            System.out.println(matcher.getIntro() + " match " + matcher.getIntro());
         }
     }
 }

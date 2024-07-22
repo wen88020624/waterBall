@@ -1,5 +1,6 @@
 package v1;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,22 +9,31 @@ public class Individual {
     private static int id=0;
     private final int userId;
     private final Gender gender;
-    private final int age;
+    private int age;
+
     private String intro;
-    private List<String> habits;
+
+    private List<String> habits = new ArrayList<>();
     private Coord coord;
     private String matchStrategy;
-
     private Individual matchPerson;
 
     public Individual(Gender gender, int age, String intro, String habitStr, Coord coord, String matchStrategy) {
         this.userId = id++;
         this.gender = gender;
-        this.age = age;
+        setAge(age);
         this.intro = intro;
         setHabits(habitStr);
         this.coord = coord;
         this.matchStrategy = matchStrategy;
+    }
+
+    private void setAge(int age) {
+        if (age >= 18) {
+            this.age = age;
+        } else {
+            System.out.println("Must be at least eighteen years old");
+        }
     }
 
     public void match(Individual individual) {
@@ -55,8 +65,8 @@ public class Individual {
     }
 
     public void setHabits(String habitStr) {
-        String[] habits = habitStr.split(",");
-        for (String habit : habits) {
+        String[] allHabits = habitStr.split(",");
+        for (String habit : allHabits) {
             habit = habit.trim();
             if (habit.length() <= 10) {
                 this.habits.add(habit);
@@ -69,12 +79,12 @@ public class Individual {
 
     public enum Gender {
         FEMALE, MALE;
+
     }
-    public class Coord {
-
+    public static class Coord {
         private int x;
-        private int y;
 
+        private int y;
         public Coord(int x, int y) {
             this.x = x;
             this.y = y;
@@ -85,5 +95,9 @@ public class Individual {
                     + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
 
+
+    }
+    public String getIntro() {
+        return intro;
     }
 }
