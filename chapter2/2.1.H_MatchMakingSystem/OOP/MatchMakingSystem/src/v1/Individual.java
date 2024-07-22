@@ -10,12 +10,11 @@ public class Individual {
     private final int userId;
     private final Gender gender;
     private int age;
-
     private String intro;
-
     private List<String> habits = new ArrayList<>();
     private Coord coord;
     private String matchStrategy;
+
     private Individual matchPerson;
 
     public Individual(Gender gender, int age, String intro, String habitStr, Coord coord, String matchStrategy) {
@@ -80,24 +79,29 @@ public class Individual {
     public enum Gender {
         FEMALE, MALE;
 
+
     }
     public static class Coord {
         private int x;
-
         private int y;
+
         public Coord(int x, int y) {
             this.x = x;
             this.y = y;
         }
-
         public double distanceTo(Coord otherPeopleCoord) {
             return Math.sqrt(Math.pow(this.x - otherPeopleCoord.x, 2)
                     + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
 
 
+
     }
     public String getIntro() {
         return intro;
+    }
+
+    public Individual getMatchPerson() {
+        return matchPerson;
     }
 }
