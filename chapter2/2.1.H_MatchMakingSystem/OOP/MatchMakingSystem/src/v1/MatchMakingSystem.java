@@ -37,9 +37,25 @@ public class MatchMakingSystem {
 
             } else if (matchStrategy == "Habit-Based") {
                 //配對與自己興趣擁有最大交集量的對象（興趣交集量相同則選擇編號較小的那位）。
+                Individual maxInterest = null;
+                for (Individual candidate : individuals) {
+                    if (maxInterest == null
+                            || matcher.getInterestOverlapWith(candidate) > matcher.getInterestOverlapWith(maxInterest)) {
+                        maxInterest = candidate;
+                    }
+                }
+                matcher.match(maxInterest);
 
             } else if (matchStrategy == "Habit-Based-Reverse") {
                 //配對與自己興趣擁有最小交集量的對象（興趣交集量相同則選擇編號較小的那位）。
+                Individual minInterest = null;
+                for (Individual candidate : individuals) {
+                    if (minInterest == null
+                            || matcher.getInterestOverlapWith(candidate) < matcher.getInterestOverlapWith(minInterest)) {
+                        minInterest = candidate;
+                    }
+                }
+                matcher.match(minInterest);
             }
         }
     }

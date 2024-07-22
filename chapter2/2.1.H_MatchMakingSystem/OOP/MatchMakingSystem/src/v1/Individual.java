@@ -1,6 +1,8 @@
 package v1;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Individual {
     private static int id=0;
@@ -14,12 +16,12 @@ public class Individual {
 
     private Individual matchPerson;
 
-    public Individual(Gender gender, int age, String intro, List<String> habits, Coord coord, String matchStrategy) {
+    public Individual(Gender gender, int age, String intro, String habitStr, Coord coord, String matchStrategy) {
         this.userId = id++;
         this.gender = gender;
         this.age = age;
         this.intro = intro;
-        this.habits = habits;
+        setHabits(habitStr);
         this.coord = coord;
         this.matchStrategy = matchStrategy;
     }
@@ -30,6 +32,14 @@ public class Individual {
 
     public double distanceTo(Individual individual) {
         return this.getCoord().distanceTo(individual.getCoord());
+    }
+
+    public int getInterestOverlapWith(Individual individual) {
+        Set<String> thisHabits = new HashSet<>(this.getHabits());
+        Set<String> otherHabits = new HashSet<>(individual.getHabits());
+
+        thisHabits.retainAll(otherHabits);
+        return thisHabits.size();
     }
 
     public List<String> getHabits() {
@@ -44,11 +54,24 @@ public class Individual {
         return matchStrategy;
     }
 
-    public enum Gender {
-        FEMALE, MALE
+    public void setHabits(String habitStr) {
+        String[] habits = habitStr.split(",");
+        for (String habit : habits) {
+            habit = habit.trim();
+            if (habit.length() <= 10) {
+                this.habits.add(habit);
+
+            } else {
+                System.out.println("Habit's length cannot exceed 10 characters!");
+            }
+        }
     }
 
+    public enum Gender {
+        FEMALE, MALE;
+    }
     public class Coord {
+
         private int x;
         private int y;
 
@@ -61,6 +84,6 @@ public class Individual {
             return Math.sqrt(Math.pow(this.x - otherPeopleCoord.x, 2)
                     + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
-    }
 
+    }
 }
