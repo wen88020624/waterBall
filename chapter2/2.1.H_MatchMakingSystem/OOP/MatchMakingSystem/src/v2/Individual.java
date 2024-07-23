@@ -49,14 +49,6 @@ public class Individual {
         return thisHabits.size();
     }
 
-    public List<String> getHabits() {
-        return habits;
-    }
-
-    public Coord getCoord() {
-        return coord;
-    }
-
     public void setHabits(String habitStr) {
         String[] allHabits = habitStr.split(",");
         for (String habit : allHabits) {
@@ -77,7 +69,6 @@ public class Individual {
     public static class Coord {
         private int x;
         private int y;
-
         public Coord(int x, int y) {
             this.x = x;
             this.y = y;
@@ -87,11 +78,20 @@ public class Individual {
                     + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
     }
+
     public String getIntro() {
         return intro;
     }
-
     public Individual getMatchPerson() {
         return matchPerson;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public List<String> getHabits() {
+        return habits;
+    }
+    public Coord getCoord() {
+        return coord;
     }
 }

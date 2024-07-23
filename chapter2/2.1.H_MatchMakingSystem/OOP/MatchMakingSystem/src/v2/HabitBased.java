@@ -1,21 +1,22 @@
 package v2;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class HabitBased implements MatchMakingStrategy {
     @Override
-    public void match(Individual matcher, List<Individual> individuals) {
-        Individual maxInterest = null;
+    public List<Individual> match(Individual i, List<Individual> individuals) {
+        List<Individual> candidates = new ArrayList<>();
         for (Individual candidate : individuals) {
-            if (matcher.equals(candidate)) {
-                continue;
-            }
-            if (maxInterest == null
-                    || matcher.getInterestOverlapWith(candidate) > matcher.getInterestOverlapWith(maxInterest)) {
-                maxInterest = candidate;
+            if (!i.equals(candidate)) {
+                candidates.add(candidate);
             }
         }
-        matcher.match(maxInterest);
-        System.out.println(matcher.getIntro() + " match " + matcher.getMatchPerson().getIntro());
+
+        candidates.sort(Comparator.comparingInt(i::getInterestOverlapWith)
+                .thenComparingInt(Individual::getUserId));
+
+        return candidates;
     }
 }

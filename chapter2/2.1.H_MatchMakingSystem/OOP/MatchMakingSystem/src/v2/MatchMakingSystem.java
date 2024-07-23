@@ -12,8 +12,10 @@ public class MatchMakingSystem {
     }
 
     public void match() {
-        for (Individual matcher : individuals) {
-            strategy.match(matcher, individuals);
+        for (Individual i : individuals) {
+            List<Individual> candidates = strategy.match(i, individuals);
+            i.match(candidates.get(0));
+            System.out.println(i.getIntro() + " match " + i.getMatchPerson().getIntro());
         }
     }
 }

@@ -1,21 +1,22 @@
 package v2;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class DistanceBased implements MatchMakingStrategy {
     @Override
-    public void match(Individual matcher, List<Individual> individuals) {
-        Individual closetPerson = null;
+    public List<Individual> match(Individual i, List<Individual> individuals) {
+        List<Individual> candidates = new ArrayList<>();
         for (Individual candidate : individuals) {
-            if (matcher.equals(candidate)) {
-                continue;
-            }
-            if (closetPerson == null
-                    || matcher.distanceTo(candidate) < matcher.distanceTo(closetPerson)) {
-                closetPerson = candidate;
+            if (!i.equals(candidate)) {
+                candidates.add(candidate);
             }
         }
-        matcher.match(closetPerson);
-        System.out.println(matcher.getIntro() + " match " + matcher.getMatchPerson().getIntro());
+
+        candidates.sort(Comparator.comparingDouble(i::distanceTo)
+                .thenComparingInt(Individual::getUserId));
+
+        return candidates;
     }
 }
