@@ -13,18 +13,16 @@ public class Individual {
     private String intro;
     private List<String> habits = new ArrayList<>();
     private Coord coord;
-    private MatchStrategy matchStrategy;
 
     private Individual matchPerson;
 
-    public Individual(Gender gender, int age, String intro, String habitStr, Coord coord, MatchStrategy matchStrategy) {
+    public Individual(Gender gender, int age, String intro, String habitStr, Coord coord) {
         this.userId = id++;
         this.gender = gender;
         setAge(age);
         this.intro = intro;
         setHabits(habitStr);
         this.coord = coord;
-        this.matchStrategy = matchStrategy;
     }
 
     private void setAge(int age) {
@@ -59,10 +57,6 @@ public class Individual {
         return coord;
     }
 
-    public MatchStrategy getMatchStrategy() {
-        return matchStrategy;
-    }
-
     public void setHabits(String habitStr) {
         String[] allHabits = habitStr.split(",");
         for (String habit : allHabits) {
@@ -78,9 +72,8 @@ public class Individual {
 
     public enum Gender {
         FEMALE, MALE;
-
-
     }
+
     public static class Coord {
         private int x;
         private int y;
@@ -93,9 +86,6 @@ public class Individual {
             return Math.sqrt(Math.pow(this.x - otherPeopleCoord.x, 2)
                     + Math.pow(this.y - otherPeopleCoord.y, 2));
         }
-
-
-
     }
     public String getIntro() {
         return intro;

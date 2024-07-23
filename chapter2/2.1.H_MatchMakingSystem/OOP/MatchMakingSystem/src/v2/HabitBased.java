@@ -2,7 +2,7 @@ package v2;
 
 import java.util.List;
 
-public class HabitBased implements MatchStrategy {
+public class HabitBased implements MatchMakingStrategy {
     @Override
     public void match(Individual matcher, List<Individual> individuals) {
         Individual maxInterest = null;

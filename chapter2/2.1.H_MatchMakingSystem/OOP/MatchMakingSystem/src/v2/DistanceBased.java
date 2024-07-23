@@ -2,7 +2,7 @@ package v2;
 
 import java.util.List;
 
-public class DistanceBased implements MatchStrategy {
+public class DistanceBased implements MatchMakingStrategy {
     @Override
     public void match(Individual matcher, List<Individual> individuals) {
         Individual closetPerson = null;
