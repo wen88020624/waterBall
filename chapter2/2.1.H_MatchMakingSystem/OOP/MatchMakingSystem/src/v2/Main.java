@@ -35,7 +35,7 @@ public class Main {
                                 , "Hi, i am Yoyo ..."
                                 , "booking, learning, playing, yoyo, hiking"
                                 , new Individual.Coord(7, 3)
-                                , new DistanceBasedReverse())
+                                , new HabitBasedReverse())
 
                 )
         );
