@@ -4,16 +4,21 @@ import java.util.List;
 
 public class MatchMakingSystem {
     private List<Individual> individuals;
+    private Strategy strategy;
 
-    public MatchMakingSystem(List<Individual> individuals) {
+    public MatchMakingSystem(List<Individual> individuals, Strategy strategy) {
         this.individuals = individuals;
+        this.strategy = strategy;
+    }
+
+    public enum Strategy {
+        DISTANCE_BASED, DISTANCE_BASED_REVERSE, HABIT_BASED, HABIT_BASED_REVERSE
     }
 
     public void match() {
         for (Individual matcher : individuals) {
-            String matchStrategy = matcher.getMatchStrategy();
 
-            if (matchStrategy == "Distance-Based") {
+            if (strategy == Strategy.DISTANCE_BASED) {
                 //配對與自己距離最近的對象（距離相同則選擇編號較小的那位）。
                 Individual closetPerson = null;
                 for (Individual candidate : individuals) {
@@ -27,7 +32,7 @@ public class MatchMakingSystem {
                 }
                 matcher.match(closetPerson);
 
-            } else if (matchStrategy == "Distance-Based-Reverse") {
+            } else if (strategy == Strategy.DISTANCE_BASED_REVERSE) {
                 //配對與自己距離最遠的對象（距離相同則選擇編號較小的那位）。
                 Individual furthestPerson = null;
                 for (Individual candidate : individuals) {
@@ -41,7 +46,7 @@ public class MatchMakingSystem {
                 }
                 matcher.match(furthestPerson);
 
-            } else if (matchStrategy == "Habit-Based") {
+            } else if (strategy == Strategy.HABIT_BASED) {
                 //配對與自己興趣擁有最大交集量的對象（興趣交集量相同則選擇編號較小的那位）。
                 Individual maxInterest = null;
                 for (Individual candidate : individuals) {
@@ -55,7 +60,7 @@ public class MatchMakingSystem {
                 }
                 matcher.match(maxInterest);
 
-            } else if (matchStrategy == "Habit-Based-Reverse") {
+            } else if (strategy == Strategy.HABIT_BASED_REVERSE) {
                 //配對與自己興趣擁有最小交集量的對象（興趣交集量相同則選擇編號較小的那位）。
                 Individual minInterest = null;
                 for (Individual candidate : individuals) {
