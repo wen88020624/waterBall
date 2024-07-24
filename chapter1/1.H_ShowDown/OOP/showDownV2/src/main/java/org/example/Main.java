@@ -1,17 +1,17 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game(
+        ShowDown showDown = new ShowDown(
                 List.of(
                         new HumanPlayer(),
-                        new AIPlayer(),
-                        new AIPlayer(),
-                        new AIPlayer()
+                        new AI(),
+                        new AI(),
+                        new AI()
                 )
         );
-        game.start();
+        showDown.start();
     }
 }

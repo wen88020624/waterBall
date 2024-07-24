@@ -1,9 +1,10 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.example.ValidationUtils.requireNonNull;
+import static ValidationUtils.requireNonNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class Player {
     private static int lastId = 0;
@@ -20,7 +21,7 @@ public abstract class Player {
         this.hand = new Hand();
     }
 
-    public abstract void nameHimself();
+    public abstract void nameHimself(int order);
 
     public Optional<Card> takeTern(List<Player> players) {
         if (exchangeHand != null) {

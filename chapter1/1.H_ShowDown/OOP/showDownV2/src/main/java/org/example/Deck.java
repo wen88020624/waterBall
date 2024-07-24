@@ -1,4 +1,4 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.Collections;
 import java.util.Stack;

@@ -1,16 +1,16 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-public class AIPlayer extends Player{
+import static java.lang.String.format;
+
+public class AI extends Player{
+    private static final Random random = new Random();
     @Override
-    public void nameHimself() {
-        Random random = new Random();
-        setName("AIPlayer" + random.nextInt(9999));
-        System.out.println("You have named yourself: " + this.getName());
+    public void nameHimself(int order) {
+        setName(format("AI-%d", order));
     }
 
     @Override

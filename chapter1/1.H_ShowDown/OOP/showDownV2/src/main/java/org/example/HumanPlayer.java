@@ -1,32 +1,25 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static main.java.org.example.Utils.printf;
+
 public class HumanPlayer extends Player {
+    private final static Scanner in = new Scanner(System.in);
 
     @Override
-    public void nameHimself() {
-        //CLI取名
-        Scanner scanner = new Scanner(System.in);
-        boolean validInput = false;
-
-        while (!validInput) {
-            String name = scanner.nextLine();
-
-            if (name != null && !name.trim().isEmpty()) {
-                validInput = true;
-                this.setName(name.trim());
-            } else {
-                System.out.println("Invalid input. Please enter a non-empty name.");
-            }
+    public void nameHimself(int order) {
+        printf("Input your name (P%d): ", order);
+        String name = in.next();
+        if (name.isEmpty()) {
+            nameHimself(order);
+        } else {
+            setName(name);
         }
-
-        System.out.println("You have named yourself: " + this.getName());
     }
 
     @Override

@@ -1,6 +1,9 @@
-package org.example;
+package main.java.org.example;
 
-public class ValidationUtils {
+public class Utils {
+    public static void printf(String format, Object... args) {
+        System.out.printf(format, args);
+    }
 
     public static int lengthShouldBe(int value, int min, int max) {
         if (value >= min && value <= max) {

@@ -1,4 +1,4 @@
-package org.example;
+package main.java.org.example;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,20 +7,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Game {
-    private List<Player> players;
-    private Deck deck;
+public class ShowDown {
+    private static final int NUM_OF_ROUNDS = 13;
+    private final Deck deck;
+    private final List<Player> players;
+    private final List<TurnMove> turnMoves = new ArrayList<>();
 
-    public Game(List<Player> players) {
+    public ShowDown(Deck deck, List<Player> players) {
+        this.deck = deck;
         this.players = players;
-        this.deck = new Deck();
+
     }
 
     public void start() {
-        for (int i = 0; i < players.size(); i++) {
-            System.out.println("P" + (i+1) + " Please name yourself: ");
-            players.get(i).nameHimself();
-        }
+        nameThemselves();
 
         deck.shuffle();
 
@@ -72,5 +72,11 @@ public class Game {
                 .max(Comparator.comparing(Player::getPoint))
                 .orElseThrow(() -> new RuntimeException("No winner!"));
         System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
+    }
+
+    private void nameThemselves() {
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).nameHimself(i + 1);
+        }
     }
 }
