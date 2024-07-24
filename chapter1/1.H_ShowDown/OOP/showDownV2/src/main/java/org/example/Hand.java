@@ -11,7 +11,10 @@ public class Hand {
         cards = new ArrayList<>();
     }
 
-    public void add(Card card) {
+    public void addCard(Card card) {
+        if (cards.size() >= 13) {
+            throw new IllegalStateException("The hand's size must not exceed 13.");
+        }
         this.cards.add(card);
     }
 

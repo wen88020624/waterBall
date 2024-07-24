@@ -92,4 +92,8 @@ public abstract class Player {
     public void setExchangeHand(ExchangeHand exchangeHand) {
         this.exchangeHand = exchangeHand;
     }
+
+    public void addHandCard(Card card) {
+        hand.addCard(card);
+    }
 }

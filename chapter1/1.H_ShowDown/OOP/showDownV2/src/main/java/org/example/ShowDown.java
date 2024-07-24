@@ -21,16 +21,8 @@ public class ShowDown {
 
     public void start() {
         nameThemselves();
-
         deck.shuffle();
-
-        for (int i = 0; i<players.size(); i++) {
-            while (players.get(i).getHand().size() < 13) {
-                players.get(i).getHand().add(deck.draw());
-            }
-            System.out.println("P" + (i+1) + ", name: " + players.get(i).getName() +
-                    ", finished draw card, hand size: " + players.get(i).getHand().size());
-        }
+        drawHands();
 
         for (int round=1; round<=13; round++) {
             System.out.println("round: " + round);
@@ -72,6 +64,14 @@ public class ShowDown {
                 .max(Comparator.comparing(Player::getPoint))
                 .orElseThrow(() -> new RuntimeException("No winner!"));
         System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
+    }
+
+    private void drawHands() {
+        int deckSize = deck.size();
+        for (int i = 0; i < deckSize; i++) {
+            Card card = deck.draw();
+            players.get(i % players.size()).addHandCard(card);
+        }
     }
 
     private void nameThemselves() {
