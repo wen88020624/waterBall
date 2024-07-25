@@ -1,15 +1,12 @@
 package main.java.org.example;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hand {
-    private List<Card> cards;
-
-    public Hand() {
-        cards = new ArrayList<>();
-    }
+public class Hand implements Iterable<Card> {
+    private final List<Card> cards = new ArrayList<>();
 
     public void addCard(Card card) {
         if (cards.size() >= 13) {
@@ -18,21 +15,21 @@ public class Hand {
         this.cards.add(card);
     }
 
+    public Card get(int index) {
+        return cards.get(index);
+    }
+
+    public Card show(int index) {
+        return cards.remove(index);
+    }
+
     public int size() {
         return cards.size();
     }
 
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public String printHand() {
-        return cards.stream()
-                .map(Card::toString)
-                .collect(Collectors.joining(", "));
+    @Override
+    public Iterator<Card> iterator() {
+        return cards.iterator();
     }
 }

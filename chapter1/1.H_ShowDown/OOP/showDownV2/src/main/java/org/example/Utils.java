@@ -5,6 +5,14 @@ public class Utils {
         System.out.printf(format, args);
     }
 
+    public static void print(String content) {
+        System.out.print(content);
+    }
+
+    public static void println(String content) {
+        System.out.println(content);
+    }
+
     public static int lengthShouldBe(int value, int min, int max) {
         if (value >= min && value <= max) {
             return value;

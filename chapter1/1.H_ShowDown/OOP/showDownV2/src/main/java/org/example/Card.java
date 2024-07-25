@@ -1,12 +1,10 @@
 package main.java.org.example;
 
+import static java.lang.String.format;
+
 public class Card implements Comparable<Card>{
     private final Rank rank;
     private final Suit suit;
-
-    public enum ShowDownResult {
-        BIGGER, SMALLER
-    }
 
     public enum Suit {
         SPADE('♠'), HEART('♥'), DIAMOND('♦'), CLUB('♣');
@@ -62,5 +60,10 @@ public class Card implements Comparable<Card>{
             return this.getSuit().compareTo(card.getSuit());
         }
         return this.getRank().compareTo(card.getRank());
+    }
+
+    @Override
+    public String toString() {
+        return format("%s%s", suit, rank);
     }
 }

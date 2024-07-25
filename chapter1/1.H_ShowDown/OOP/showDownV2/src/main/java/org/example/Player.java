@@ -1,9 +1,7 @@
 package main.java.org.example;
 
-import java.util.List;
 import java.util.Optional;
 
-import static ValidationUtils.requireNonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
@@ -27,28 +25,7 @@ public abstract class Player {
 
     protected abstract Card showCard();
 
-    private void exchangeHands(List<Player> players) {
-        hasUsedExchangeHands = true;
-        Player exchangee = chooseExchangee(players);
-        System.out.println("Before exchange." + "\n" +
-                "Exchanger: " + getName() + " , Exchanger.hand: " + getHand().printHand() + "\n" +
-                "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
-
-        var exchangeHand = new ExchangeHands(this, exchangee);
-        this.setExchangeHands(exchangeHand);
-
-        //交換手牌
-        Hand temp = this.hand;
-        this.hand = exchangee.hand;
-        exchangee.hand = temp;
-        System.out.println("After exchange." + "\n" +
-                "Exchanger: " + getName() + " , Exchanger.hand: " + getHand().printHand() + "\n" +
-                "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
-    }
-
     protected abstract Optional<ExchangeHands> makeExchangeHandsDecision();
-
-    protected abstract Player chooseExchangee(List<Player> players);
 
     public void gainPoint() {
         point++;
@@ -70,10 +47,6 @@ public abstract class Player {
         return point;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setExchangeHands(ExchangeHands exchangeHands) {
         this.exchangeHands = exchangeHands;
     }
@@ -92,5 +65,9 @@ public abstract class Player {
 
     public void setHand(Hand hand) {
         this.hand = hand;
+    }
+
+    public void setShowDown(ShowDown showDown) {
+        this.showDown = showDown;
     }
 }

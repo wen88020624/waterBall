@@ -1,24 +1,26 @@
 package main.java.org.example;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
 import static java.util.Collections.max;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.joining;
 import static main.java.org.example.Utils.printf;
+import static main.java.org.example.Utils.println;
 
 public class ShowDown {
     private static final int NUM_OF_ROUNDS = 13;
     private final Deck deck;
     private final List<Player> players;
     private final List<TurnMove> turnMoves = new ArrayList<>();
+
     public ShowDown(Deck deck, List<Player> players) {
         this.deck = deck;
         this.players = players;
-
+        players.forEach(p -> p.setShowDown(this));
     }
 
     public void start() {
@@ -26,12 +28,12 @@ public class ShowDown {
         deck.shuffle();
         drawHands();
         playRounds();
-        printShowCards();
+        gameOver();
+    }
 
-        Player finalWinner = players.stream()
-                .max(comparing(Player::getPoint))
-                .orElseThrow(() -> new RuntimeException("No winner!"));
-        System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
+    private void gameOver() {
+        Player winner = max(players, comparingInt(Player::getPoint));
+        printf("The winner is %s.", winner.getName());
     }
 
     private void takeTurn(Player player) {
@@ -82,4 +84,5 @@ public class ShowDown {
     public List<Player> getPlayers() {
         return players;
     }
+
 }
