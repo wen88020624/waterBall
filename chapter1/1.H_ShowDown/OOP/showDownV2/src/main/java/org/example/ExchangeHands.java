@@ -20,7 +20,7 @@ public class ExchangeHands {
         printf("You have exchanged your hand with the player %s.\n", exchanger.getName());
     }
 
-    public void countDown() {
+    public void countdown() {
         countDown--;
         if (countDown == 0) {
             exchange(); // exchange back when count down 0

@@ -1,12 +1,13 @@
 package main.java.org.example;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
+import static java.util.Collections.max;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
 import static main.java.org.example.Utils.printf;
 
 public class ShowDown {
@@ -14,7 +15,6 @@ public class ShowDown {
     private final Deck deck;
     private final List<Player> players;
     private final List<TurnMove> turnMoves = new ArrayList<>();
-
     public ShowDown(Deck deck, List<Player> players) {
         this.deck = deck;
         this.players = players;
@@ -26,18 +26,18 @@ public class ShowDown {
         deck.shuffle();
         drawHands();
         playRounds();
-
+        printShowCards();
 
         Player finalWinner = players.stream()
-                .max(Comparator.comparing(Player::getPoint))
+                .max(comparing(Player::getPoint))
                 .orElseThrow(() -> new RuntimeException("No winner!"));
         System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
     }
 
     private void takeTurn(Player player) {
         printf("It's %s's turn.\n", player.getName());
-        TurnMove tunrMove = player.takeTern();
-        tunrMove.add(turnMove);
+        TurnMove turnMove = player.takeTern();
+        turnMoves.add(turnMove);
     }
 
     private void playRounds() {
@@ -46,43 +46,23 @@ public class ShowDown {
             showdown();
             turnMoves.clear();
         }
+    }
 
+    private void showdown() {
+        printShowCards();
+        TurnMove winnerTurnMove = max(turnMoves, comparing(TurnMove::getShowCard));
+        Player winner = winnerTurnMove.getPlayer();
+        winner.gainPoint();
+        printf("%s wins this round.\n", winner.getName());
+    }
 
-        for (int round=1; round<=13; round++) {
-            System.out.println("round: " + round);
+    private void printShowCards() {
+        printf("Show cards: ");
+        println(turnMoves.stream()
+                .map(TurnMove::getShowCard)
+                .map(Objects::toString)
+                .collect(joining(" ")));
 
-            List<Optional<Card>> cards = new ArrayList<>();
-            for (Player player : players) {
-                cards.add(player.takeTern(players));
-            }
-
-            String playerOfShowCard = IntStream.range(0, cards.size())
-                    .mapToObj(index -> {
-                        String cardDescription = cards.get(index)
-                                .map(Card::toString)
-                                .orElse("No show card");
-                        return "P" + (index + 1) + ", " + players.get(index).getName() +
-                                " show card: " + cardDescription +
-                                " , hand: " + players.get(index).getHand().printHand() +
-                                " , handSize: " + players.get(index).getHand().size();
-                    })
-                    .collect(Collectors.joining("\n"));
-            System.out.println(playerOfShowCard);
-
-            int maxIndex = -1;
-            for (int index = 0; index < cards.size(); index++) {
-                if (cards.get(index).isEmpty()) {
-                    continue;
-                }
-                if (maxIndex == -1 || cards.get(index).get().compareTo(cards.get(maxIndex).get())) {
-                    maxIndex = index;
-                }
-            }
-
-            Player winner = players.get(maxIndex);
-            System.out.println("winner: " + winner.getName() + " , show card: " + cards.get(maxIndex).get().toString());
-            winner.gainPoint();
-        }
     }
 
     private void drawHands() {
@@ -97,5 +77,9 @@ public class ShowDown {
         for (int i = 0; i < players.size(); i++) {
             players.get(i).nameHimself(i + 1);
         }
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }

@@ -6,6 +6,11 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.lang.String.format;
+import static java.util.List.of;
+import static java.util.Optional.empty;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.range;
 import static main.java.org.example.Utils.printf;
 
 public class HumanPlayer extends Player {
@@ -23,10 +28,40 @@ public class HumanPlayer extends Player {
     }
 
     @Override
+    protected Optional<ExchangeHands> makeExchangeHandsDecision() {
+        printf("Would you like to perform hands exchange? (y/n): ");
+        String answer = in.next().toLowerCase().trim();
+        if (answer.equals("y")) {
+            List<Player> players = showDown.getPlayers().stream()
+                    .filter(p -> p != this)
+                    .toList();
+            return of(selectExchangeHandsTarget(players));
+        } else {
+            return empty();
+        }
+    }
+
+    private ExchangeHands selectExchangeHandsTarget(List<Player> players) {
+        printPlayerChoices(players);
+        int targetIndex = in.nextInt();
+        if (targetIndex >= players.size() || targetIndex < 0) {
+            return selectExchangeHandsTarget(players);
+        }
+        return new ExchangeHands(this, players.get(targetIndex));
+    }
+
+    private void printPlayerChoices(List<Player> players) {
+        printf("Select the target %s:",
+                range(0, players.size())
+                .mapToObj(i -> format("(%d) %s", i, players.get(i).getName()))
+                        .collect(joining(" ")));
+    }
+
+    @Override
     protected Optional<Card> showCard() {
         //如果有玩家在換牌之後，發現沒有牌出了，此時該玩家可以不必出牌，並在此輪無法參與比大小決勝。
         if (hand.getCards().isEmpty() && exchangeHands != null) {
-            return Optional.empty();
+            return empty();
         }
 
         //CLI用數字選擇出哪張牌
@@ -83,16 +118,16 @@ public class HumanPlayer extends Player {
     }
 
     private void printHands() {
-        String handDes = IntStream.range(0, hand.getCards().size())
+        String handDes = range(0, hand.getCards().size())
                         .mapToObj(index -> (index + 1) + "." + hand.getCards().get(index))
-                        .collect(Collectors.joining(", "));
+                        .collect(joining(", "));
         System.out.println("Please choose your showCard: " + handDes);
     }
 
     private String printAllPlayers(List<Player> players) {
         return players.stream()
                 .map(player -> "ID:" + player.getId() + ",Name:" + player.getName())
-                .collect(Collectors.joining(" , "));
+                .collect(joining(" , "));
     }
 
     @Override

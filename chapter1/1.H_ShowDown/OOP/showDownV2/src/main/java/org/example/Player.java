@@ -6,28 +6,21 @@ import java.util.Optional;
 import static ValidationUtils.requireNonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 public abstract class Player {
     protected int point = 0;
     protected ShowDown showDown;
     private String name;
     protected Hand hand = new Hand();
-
     protected ExchangeHands exchangeHands;
 
-    public Optional<Card> takeTern(List<Player> players) {
+    public TurnMove takeTern() {
         TurnMove turnMove = new TurnMove(this, hasUsedExchangeHands() ?
                 empty() : makeExchangeHandsDecision(), showCard());
         turnMove.getExchangeHands().ifPresent(this::setExchangeHands);
-        getExchangeHands().ifPresend(this::)
-
-        boolean isUse = makeExchangeHandsDecision();
-
-        if (isUse) {
-            exchangeHands(players);
-        }
-
-        return showCard();
+        getExchangeHands().ifPresent(ExchangeHands::countdown);
+        return turnMove;
     }
 
     public abstract void nameHimself(int order);
@@ -93,8 +86,8 @@ public abstract class Player {
         hand.addCard(card);
     }
 
-    public ExchangeHands getExchangeHands() {
-        return exchangeHands;
+    public Optional<ExchangeHands> getExchangeHands() {
+        return ofNullable(exchangeHands);
     }
 
     public void setHand(Hand hand) {
