@@ -5,33 +5,23 @@ import java.util.Optional;
 
 import static ValidationUtils.requireNonNull;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.empty;
 
 public abstract class Player {
-    private static int lastId = 0;
-    private final int id;
+    protected int point = 0;
+    protected ShowDown showDown;
     private String name;
-    protected Hand hand;
-    private int point = 0;
-    protected boolean hasUsedExchangeHands = false;
+    protected Hand hand = new Hand();
 
-    protected ExchangeHand exchangeHand;
-
-    public Player() {
-        id = ++lastId;
-        this.hand = new Hand();
-    }
-
-    public abstract void nameHimself(int order);
+    protected ExchangeHands exchangeHands;
 
     public Optional<Card> takeTern(List<Player> players) {
-        if (exchangeHand != null) {
-            exchangeHand.updateRemainTern();
-            if (exchangeHand.getRemainTern() == 0) {
-                exchangeHand.exchangeHandsBack();
-            }
-        }
+        TurnMove turnMove = new TurnMove(this, hasUsedExchangeHands() ?
+                empty() : makeExchangeHandsDecision(), showCard());
+        turnMove.getExchangeHands().ifPresent(this::setExchangeHands);
+        getExchangeHands().ifPresend(this::)
 
-        boolean isUse = makeDecision();
+        boolean isUse = makeExchangeHandsDecision();
 
         if (isUse) {
             exchangeHands(players);
@@ -40,7 +30,9 @@ public abstract class Player {
         return showCard();
     }
 
-    protected abstract Optional<Card> showCard();
+    public abstract void nameHimself(int order);
+
+    protected abstract Card showCard();
 
     private void exchangeHands(List<Player> players) {
         hasUsedExchangeHands = true;
@@ -49,8 +41,8 @@ public abstract class Player {
                 "Exchanger: " + getName() + " , Exchanger.hand: " + getHand().printHand() + "\n" +
                 "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
 
-        var exchangeHand = new ExchangeHand(this, exchangee);
-        this.setExchangeHand(exchangeHand);
+        var exchangeHand = new ExchangeHands(this, exchangee);
+        this.setExchangeHands(exchangeHand);
 
         //交換手牌
         Hand temp = this.hand;
@@ -61,7 +53,7 @@ public abstract class Player {
                 "Exchangee: " + exchangee.getName() + " , Exchangee.hand: " + exchangee.getHand().printHand());
     }
 
-    protected abstract boolean makeDecision();
+    protected abstract Optional<ExchangeHands> makeExchangeHandsDecision();
 
     protected abstract Player chooseExchangee(List<Player> players);
 
@@ -89,11 +81,23 @@ public abstract class Player {
         return id;
     }
 
-    public void setExchangeHand(ExchangeHand exchangeHand) {
-        this.exchangeHand = exchangeHand;
+    public void setExchangeHands(ExchangeHands exchangeHands) {
+        this.exchangeHands = exchangeHands;
+    }
+
+    public boolean hasUsedExchangeHands() {
+        return exchangeHands != null;
     }
 
     public void addHandCard(Card card) {
         hand.addCard(card);
+    }
+
+    public ExchangeHands getExchangeHands() {
+        return exchangeHands;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
     }
 }

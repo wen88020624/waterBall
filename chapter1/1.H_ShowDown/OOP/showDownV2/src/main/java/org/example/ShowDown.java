@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static main.java.org.example.Utils.printf;
+
 public class ShowDown {
     private static final int NUM_OF_ROUNDS = 13;
     private final Deck deck;
@@ -23,6 +25,28 @@ public class ShowDown {
         nameThemselves();
         deck.shuffle();
         drawHands();
+        playRounds();
+
+
+        Player finalWinner = players.stream()
+                .max(Comparator.comparing(Player::getPoint))
+                .orElseThrow(() -> new RuntimeException("No winner!"));
+        System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
+    }
+
+    private void takeTurn(Player player) {
+        printf("It's %s's turn.\n", player.getName());
+        TurnMove tunrMove = player.takeTern();
+        tunrMove.add(turnMove);
+    }
+
+    private void playRounds() {
+        for (int i = 0; i < NUM_OF_ROUNDS; i++) {
+            players.forEach(this::takeTurn);
+            showdown();
+            turnMoves.clear();
+        }
+
 
         for (int round=1; round<=13; round++) {
             System.out.println("round: " + round);
@@ -59,11 +83,6 @@ public class ShowDown {
             System.out.println("winner: " + winner.getName() + " , show card: " + cards.get(maxIndex).get().toString());
             winner.gainPoint();
         }
-
-        Player finalWinner = players.stream()
-                .max(Comparator.comparing(Player::getPoint))
-                .orElseThrow(() -> new RuntimeException("No winner!"));
-        System.out.println("Final winner: " + finalWinner.getName() + ", Point: " + finalWinner.getPoint());
     }
 
     private void drawHands() {

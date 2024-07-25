@@ -31,7 +31,7 @@ public class AI extends Player{
     }
 
     @Override
-    protected boolean makeDecision() {
+    protected boolean makeExchangeHandsDecision() {
         if (hasUsedExchangeHands) {
             return false;
         }
