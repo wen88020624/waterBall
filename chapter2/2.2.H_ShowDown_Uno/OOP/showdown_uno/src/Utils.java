@@ -1,5 +1,3 @@
-package main.java.org.example;
-
 public class Utils {
     public static void printf(String format, Object... args) {
         System.out.printf(format, args);
