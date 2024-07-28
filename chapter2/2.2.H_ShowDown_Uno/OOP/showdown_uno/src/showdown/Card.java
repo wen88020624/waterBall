@@ -1,5 +1,7 @@
 package showdown;
 
+import static java.lang.String.format;
+
 public class Card implements Comparable<Card>{
     private final Suit suit;
     private final Rank rank;
@@ -47,5 +49,10 @@ public class Card implements Comparable<Card>{
             return this.rank.compareTo(card.rank);
         }
         return this.suit.compareTo(card.suit);
+    }
+
+    @Override
+    public String toString() {
+        return format("%s%s", suit, rank);
     }
 }

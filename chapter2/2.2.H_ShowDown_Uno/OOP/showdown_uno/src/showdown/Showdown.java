@@ -3,6 +3,7 @@ package showdown;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.max;
@@ -51,6 +52,7 @@ public class Showdown {
             players.forEach(this::takeTurn);
             printShowCards();
             showdown();
+            turnMoves.clear();
         }
     }
 
@@ -71,7 +73,7 @@ public class Showdown {
         System.out.print("Show cards: ");
         System.out.println(turnMoves.stream()
                 .map(TurnMove::getShowCard)
-                .map(Card::toString)
+                .map(Objects::toString)
                 .collect(Collectors.joining(" ")));
     }
 }

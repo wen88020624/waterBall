@@ -13,4 +13,12 @@ public class Hand {
     public void addHand(Card card) {
         this.cards.add(card);
     }
+
+    public Card get(int index) {
+        return cards.get(index);
+    }
+
+    public Card show(int index) {
+        return cards.remove(index);
+    }
 }

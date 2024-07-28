@@ -2,12 +2,20 @@ package showdown;
 
 public abstract class Player {
     private String name;
+
     private int point = 0;
     private Hand hand = new Hand();
     private Showdown showdown;
+
     public abstract void nameSelf(int order);
 
-    public abstract TurnMove takeTurn();
+    public TurnMove takeTurn() {
+        System.out.printf("It's %s turn.", this.getName());
+        Card card = showCard();
+        return new TurnMove(this, card);
+    };
+
+    protected abstract Card showCard();
 
     public void gainPoint() {
         this.point++;
@@ -31,5 +39,9 @@ public abstract class Player {
 
     public Hand getHand() {
         return hand;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
     }
 }
