@@ -24,12 +24,17 @@ public class HumanPlayer extends Player {
     @Override
     public Card showCard() {
         printCardSelections();
+
+        Card topCard = getUno().getCardStack().pop();
+        List<Card> cardSelections = getHand().getCards().stream()
+                .filter(card -> topCard.equalColor(card) || topCard.equalNumber(card))
+                .toList();
         try {
             int choice = in.nextInt();
             if (choice < 0 || choice > getHand().size()) {
                 showCard();
             }
-            return 
+            return
 
         } catch (InputMismatchException e) {
             showCard();
@@ -38,10 +43,6 @@ public class HumanPlayer extends Player {
 
     private void printCardSelections() {
         System.out.println("Select the card to play: ");
-        Card topCard = getUno().getCardStack().pop();
-        List<Card> cardSelections = getHand().getCards().stream()
-                .filter(card -> topCard.equalColor(card) || topCard.equalNumber(card))
-                .toList();
         StringBuilder numbers = new StringBuilder();
         StringBuilder cards = new StringBuilder();
 
