@@ -1,9 +1,6 @@
 package uno;
 
-import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -24,29 +21,33 @@ public class HumanPlayer extends Player {
     @Override
     public Card showCard() {
         printCardSelections();
-        try {
-            int choice = in.nextInt();
-            if (choice < 0 || choice > getHand().size()) {
-                showCard();
+        int choice = in.nextInt();
+        Card topCard = getUno().getCardStack().peek();
+        if (isValidChoice(choice)) {
+            Card choiceCard = getHand().getCards().get(choice);
+            if (isValidCard(topCard, choiceCard)) {
+                return getHand().getCards().remove(choice);
             }
-            return 
-
-        } catch (InputMismatchException e) {
-            showCard();
         }
+        return showCard();
+    }
+
+    private boolean isValidCard(Card topCard, Card choice) {
+        return topCard.equalColor(choice)
+                && topCard.equalNumber(choice);
+    }
+
+    private boolean isValidChoice(int choice) {
+        return choice < 0 || choice > getHand().size();
     }
 
     private void printCardSelections() {
         System.out.println("Select the card to play: ");
-        Card topCard = getUno().getCardStack().pop();
-        List<Card> cardSelections = getHand().getCards().stream()
-                .filter(card -> topCard.equalColor(card) || topCard.equalNumber(card))
-                .toList();
         StringBuilder numbers = new StringBuilder();
         StringBuilder cards = new StringBuilder();
 
-        for (int i=0; i<cardSelections.size(); i++) {
-            String cardRepresentation = cardSelections.get(i).toString();
+        for (int i=0; i<getHand().getCards().size(); i++) {
+            String cardRepresentation = getHand().getCards().get(i).toString();
             numbers.append(format("%"+(-cardRepresentation.length())+"s", i)).append(" ");
             cards.append(cardRepresentation).append(" ");
         }

@@ -1,5 +1,7 @@
 package uno;
 
+import java.util.Optional;
+
 public abstract class Player {
     private String name;
     private Hand hand = new Hand();
@@ -15,10 +17,19 @@ public abstract class Player {
         return this.hand;
     }
 
-    public TurnMove takeTurn() {
-        System.out.printf("It's %s turn.", this.getName());
-        Card card = showCard();
-        return new TurnMove(this, card);
+    public Optional<TurnMove> takeTurn() {
+        Card topCard = getUno().getCardStack().peek();
+        System.out.printf("It's %s turn, the top card is: %s\n", this.getName(), topCard.toString());
+        boolean hasSelections = getHand().getCards().stream()
+                .anyMatch(c -> c.equalNumber(topCard) || c.equalColor(topCard));
+
+        if (hasSelections) {
+            Card card = showCard();
+            return Optional.of(new TurnMove(this, card));
+        } else {
+            this.addHandCard(uno.getDeck().draw());
+            return Optional.empty();
+        }
     }
 
     protected abstract Card showCard();

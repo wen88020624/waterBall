@@ -25,10 +25,10 @@ public class Deck {
     }
 
     public Card draw() {
-        return cardStack.remove(0);
+        return cardStack.pop();
     }
 
-    public Card pop() {
-        return cardStack.pop();
+    public Card peek() {
+        return cardStack.peek();
     }
 }
