@@ -8,4 +8,8 @@ public class TurnMove {
         this.player = player;
         this.showCard = showCard;
     }
+
+    public Card getShowCard() {
+        return showCard;
+    }
 }

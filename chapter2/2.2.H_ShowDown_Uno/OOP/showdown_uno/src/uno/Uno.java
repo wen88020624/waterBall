@@ -1,6 +1,7 @@
 package uno;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Uno {
     private final List<Player> players;
@@ -17,20 +18,20 @@ public class Uno {
         nameThemself();
         deck.shuffle();
         drawHands();
+        cardStack.push(deck.draw());
         playerRounds();
     }
 
     private void playerRounds() {
-        cardStack.push(deck.draw());
-
         boolean gameOver = false;
         while (!gameOver) {
             for (Player player : players) {
-                player.takeTurn();
+                Optional<TurnMove> turnMove = player.takeTurn();
+                turnMove.ifPresent(move -> cardStack.push(move.getShowCard()));
 
                 if (player.getHand().size() == 0) {
                     gameOver = true;
-                    findWinner();
+                    System.out.printf("Winner is %s", player.getName());
                 }
             }
         }
@@ -53,5 +54,9 @@ public class Uno {
 
     public Deck getCardStack() {
         return cardStack;
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 }
