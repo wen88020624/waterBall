@@ -34,11 +34,11 @@ public class HumanPlayer extends Player {
 
     private boolean isValidCard(Card topCard, Card choice) {
         return topCard.equalColor(choice)
-                && topCard.equalNumber(choice);
+                || topCard.equalNumber(choice);
     }
 
     private boolean isValidChoice(int choice) {
-        return choice < 0 || choice > getHand().size();
+        return choice > 0 || choice < getHand().size();
     }
 
     private void printCardSelections() {

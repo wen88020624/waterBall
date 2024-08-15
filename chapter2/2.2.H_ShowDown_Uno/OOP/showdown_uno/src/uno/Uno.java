@@ -32,6 +32,7 @@ public class Uno {
                 if (player.getHand().size() == 0) {
                     gameOver = true;
                     System.out.printf("Winner is %s", player.getName());
+                    break;
                 }
             }
         }

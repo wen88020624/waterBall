@@ -31,4 +31,8 @@ public class Deck {
     public Card peek() {
         return cardStack.peek();
     }
+
+    public int size() {
+        return cardStack.size();
+    }
 }
